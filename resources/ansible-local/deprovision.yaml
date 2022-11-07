@@ -1,0 +1,36 @@
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  become: yes
+
+  tasks:
+  -
+    name: Cleanup cloud-init files
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+    - /var/lib/cloud
+    - /var/log/cloud-init*
+    - /tmp/cloud-init
+  -
+    name: Re-create instance link
+    ignore_errors: yes
+    ansible.builtin.file:
+      src: /var/lib/cloud/instances
+      dest: /var/lib/cloud/instance
+      owner: root
+      group: root
+      state: link
+      force: yes
+  -
+    name: WindowsAzureAgent deprovisioning
+    changed_when: no
+    ignore_errors: yes
+    environment:
+      HISTSIZE: '0'
+    ansible.builtin.command:
+      cmd: "{{ item }}"
+    loop:
+    - /usr/sbin/waagent -force -deprovision+user
+    - sync

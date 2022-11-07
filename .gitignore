@@ -1,3 +1,6 @@
+# Secrets
+*auto.pkrvars.hcl
+
 # Cache objects
 packer_cache/
 

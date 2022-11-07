@@ -1,0 +1,20 @@
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  become: yes
+
+  tasks:
+  - name: Server Packages
+    ansible.builtin.apt:
+      update_cache: yes
+      state: latest
+      pkg:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+      - curl
+      - unzip
+      - dnsutils
+      - unattended-upgrades
+      - fail2ban
+  

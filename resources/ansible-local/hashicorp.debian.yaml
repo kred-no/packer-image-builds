@@ -1,0 +1,62 @@
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  become: yes
+
+  vars:
+    packages: # Pin version using '='
+    - consul
+    - consul-template
+    - nomad
+    os_arch_map:
+      amd64: amd64
+      x86_64: amd64
+    host_arch: "{{ os_arch_map[ansible_architecture] | default(ansible_architecture) | lower }}"
+  
+  tasks:
+  -
+    name: Validate Hashicorp Requirements
+    ansible.builtin.apt:
+      update_cache: yes
+      pkg:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+      state: present
+  -
+    name: Add Hashicorp GPG-key
+    ansible.builtin.get_url:
+      url: https://apt.releases.hashicorp.com/gpg
+      dest: /etc/apt/trusted.gpg.d/hashicorp.asc
+    register: trusted_key
+  -
+    name: Add Hashicorp Repository
+    ansible.builtin.apt_repository:
+      repo: "deb [arch={{ host_arch }} signed-by=/etc/apt/trusted.gpg.d/hashicorp.asc] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+      state: present
+      filename: hashicorp
+  -
+    name: Add HashiCorp Packages
+    ansible.builtin.apt:
+      pkg: "{{ item }}"
+    loop: "{{ packages }}"
+  -
+    name: Pin Hashicorp Package-version
+    ansible.builtin.dpkg_selections:
+      name: "{{ item.split('=')[0] }}"
+      selection: hold
+    when: "'=' in item"
+    loop: "{{ packages }}"
+  -
+    ansible.builtin.meta: flush_handlers
+  
+  handlers:
+  - 
+    name: Disable Service
+    ansible.builtin.systemd:
+      name: "{{ item }}.service"
+      enabled: no
+      state: stopped
+    loop: "{{ packages }}"
+
+

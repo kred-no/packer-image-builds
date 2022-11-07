@@ -1,0 +1,97 @@
+# Should run this after all packages are installed. Re-run database-init after any changes (e.g. deployments)
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  become: yes
+
+  tasks:
+  -
+    name: Install AIDE package
+    ansible.builtin.package:
+      name: aide
+      state: present
+    retries: 3
+  -
+    name: Create AIDE service
+    ansible.builtin.copy:
+      content: |
+        [Unit]
+          Description=Aide Check
+        [Service]
+          Type=simple
+          ExecStart=/usr/bin/aide --config /etc/aide/custom.cfg --check
+        [Install]
+          WantedBy=multi-user.target
+      dest: /etc/systemd/system/aide-check.service
+      mode: '0644'
+  -
+    name: Create AIDE timer
+    ansible.builtin.copy:
+      content: |
+        [Unit]
+          Description=AIDE check
+        [Timer]
+          OnCalendar=*-*-* 00:00:00
+          Unit=aide-check.service
+        [Install]
+          WantedBy=multi-user.target
+      dest: /etc/systemd/system/aide.timer
+      mode: '0644'
+    notify:
+    - Enable Timer
+  -
+    name: Create AIDE config
+    ansible.builtin.copy:
+      content: |
+        # Created by Ansible
+        database_in=file:/var/lib/aide/aide.db
+        database_out=file:/var/lib/aide/aide.db.new
+        database_new=file:/var/lib/aide/aide.db.new
+        
+        # Checks
+        BinLib=p+n+u+g+s+b+m+c+md5
+        ConfigFiles=p+n+u+g+s+b+m+c+md5
+        
+        # Config Folders
+        !/etc/mtab
+        !/etc/lvm*
+        /etc           ConfigFiles
+        
+        # Binary Folders
+        /bin           BinLib
+        /sbin          BinLib
+        /usr/bin       BinLib
+        /usr/local/bin BinLib
+      dest: /etc/aide/custom.cfg
+      mode: '0644'
+  -
+    name: Initialize AIDE Database
+    ansible.builtin.command:
+      cmd: aide -c /etc/aide/custom.cfg -i
+      creates: /var/lib/aide/aide.db.new
+    notify:
+    - Create Baseline Database
+    - Validate Service
+  -
+    ansible.builtin.meta: flush_handlers
+
+  handlers:
+  -
+    name: Create Baseline Database
+    ansible.builtin.copy:
+      src: /var/lib/aide/aide.db.new
+      dest: /var/lib/aide/aide.db
+      mode: '0600'
+      remote_src: yes
+  -
+    name: Enable Timer
+    ansible.builtin.systemd:
+      daemon_reload: yes
+      name: aide.timer
+      enabled: yes
+      state: started
+  -
+    name: Validate Service
+    ansible.builtin.systemd:
+      name: aide-check.service
+      state: started

@@ -1,0 +1,4 @@
+#cloud-config
+timezone: "Europe/Oslo"
+keyboard:
+  layout: no
