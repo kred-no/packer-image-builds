@@ -1,16 +1,16 @@
 //////////////////////////////////
-// Build | Debian
+// Azure Builds | Debian
 //////////////////////////////////
 
 build {
   sources = [
-    "source.azure-arm.debian-11",
+    "source.vsphere-iso.ubuntu",
   ]
 
   // Install Ansible
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-    script          = join("/", [var.resources_folder, "shell/ansible.debian.sh"])
+    script          = join("/", [var.resources_folder, "shell/ansible.vsphere.sh"])
     skip_clean      = true
   }
 
@@ -25,9 +25,9 @@ build {
     playbook_files = [
       join("/", [var.resources_folder, "ansible-local/server.debian.yaml"]),
       join("/", [var.resources_folder, "ansible-local/hashicorp.debian.yaml"]),
-      join("/", [var.resources_folder, "ansible-local/docker.debian.yaml"]),
+      join("/", [var.resources_folder, "ansible-local/docker.ubuntu.yaml"]),
       join("/", [var.resources_folder, "ansible-local/aide.debian.yaml"]),
-      join("/", [var.resources_folder, "ansible-local/deprovision.yaml"]),
+      #join("/", [var.resources_folder, "ansible-local/deprovision.yaml"]),
     ]
   }
 }

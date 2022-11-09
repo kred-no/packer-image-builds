@@ -58,5 +58,3 @@
       enabled: no
       state: stopped
     loop: "{{ packages }}"
-
-

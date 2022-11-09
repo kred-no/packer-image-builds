@@ -17,7 +17,6 @@ echo "export ANSIBLE_COLLECTIONS_PATH=/usr/share/ansible/collections"|tee -a /et
 . /etc/environment
 ansible-galaxy collection install community.general
 ansible-galaxy collection install community.azure
-ansible-galaxy collection install community.vmware
 
 export ANSIBLE_USER=ansible
 useradd --comment "Ansible User" --system --shell /bin/false --create-home ${ANSIBLE_USER}

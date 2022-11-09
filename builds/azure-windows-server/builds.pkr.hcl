@@ -1,3 +1,9 @@
+locals {
+  consul_version          = "1.14.0-beta1"
+  nomad_version           = "1.4.2"
+  consul_template_version = "0.29.5"
+}
+
 //////////////////////////////////
 // Packer Builds | Windows
 //////////////////////////////////
@@ -36,9 +42,9 @@ build {
 
     // C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
     inline = [
-      format("powershell.exe '%s'", "D:/Add-Hashicorp.ps1 -Name consul -SemVer 1.14.0-beta1 -HasService $true"),
-      format("powershell.exe '%s'", "D:/Add-Hashicorp.ps1 -Name nomad -SemVer 1.4.2 -HasService $true"),
-      format("powershell.exe '%s'", "D:/Add-Hashicorp.ps1 -Name consul-template -SemVer 0.29.5"),
+      format("powershell.exe '%s'", "D:/Add-Hashicorp.ps1 -Name consul -SemVer ${local.consul_version} -HasService $true"),
+      format("powershell.exe '%s'", "D:/Add-Hashicorp.ps1 -Name nomad -SemVer ${local.nomad_version} -HasService $true"),
+      format("powershell.exe '%s'", "D:/Add-Hashicorp.ps1 -Name consul-template -SemVer ${local.consul_template_version}"),
     ]
   }
 
