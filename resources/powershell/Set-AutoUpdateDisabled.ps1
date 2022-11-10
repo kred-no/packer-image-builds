@@ -1,4 +1,4 @@
-Write-Output "Disabling Automatic WindowsUpdates" -ForegroundColor Cyan
+Write-Output "Disabling Automatic WindowsUpdates"
 # Disable automatic windows updates
 $RunningAsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
 
@@ -17,3 +17,5 @@ if ($RunningAsAdmin) {
     Write-Output "Automatic Windows Updates disabled."
 	}
 }
+
+Start-Sleep -Seconds 3

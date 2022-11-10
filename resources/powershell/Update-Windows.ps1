@@ -11,7 +11,9 @@ function LogWrite {
   Param ([string]$logstring)
   $now = Get-Date -format s
   Add-Content $Logfile -value "$now $logstring"
-  Write-Host $logstring
+  $Host.UI.RawUI.ForegroundColor = 'Cyan'
+  Write-Output $logstring
+  $Host.UI.RawUI.ForegroundColor = 'Gray'
 }
 
 function Check-ContinueRestartOrEnd() {
@@ -236,3 +238,5 @@ if ($global:MoreUpdates -eq 1) {
 } else {
   Check-ContinueRestartOrEnd
 }
+
+Start-Sleep -Seconds 3

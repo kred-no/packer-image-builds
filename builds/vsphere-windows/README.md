@@ -1,8 +1,20 @@
-# Ubuntu on vSphere
+# Windows Server
 
-* Ubuntu uses a cloud-init extension/wrapper, called "autoinstall"
-* This example build uses e.g. a pre-uploaded iso in datastore.
-* mounting iso using requires tool for creating the iso-files. See Packer documentation.
+[Microsoft Windows License](https://learn.microsoft.com/nb-no/windows-server/get-started/upgrade-conversion-options#converting-a-current-evaluation-version-to-a-current-retail-version)
 
-## Documentation
-* [Autoinstall Reference](https://ubuntu.com/server/docs/install/autoinstall-reference)
+```powershell
+# Show info
+DISM /online /Get-CurrentEdition
+DISM /online /Get-TargetEditions
+
+# Activate Windows Server Standard or Datacenter
+DISM /online /Set-Edition:<edition ID> /ProductKey:XXXXX-XXXXX-XXXXX-XXXXX-XXXXX /AcceptEula
+
+# Convert Edition
+DISM /online /Set-Edition:ServerDatacenter /ProductKey:XXXXX-XXXXX-XXXXX-XXXXX-XXXXX /AcceptEula
+
+# Example: DISM /online /Set-Edition:ServerDatacenter /ProductKey:ABCDE-12345-ABCDE-12345-ABCDE /AcceptEula
+
+# Windows Server Essentials /converting between retail, volume-licensed, and OEM licenses
+slmgr.vbs /ipk XXXXX-XXXXX-XXXXX-XXXXX-XXXXX
+```

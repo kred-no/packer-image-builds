@@ -1,4 +1,5 @@
-Write-Host "Installing OpenSSH-Server" -ForegroundColor Cyan
+Write-Output "Installing OpenSSH-Server"
+
 $TargetCapability = (Get-WindowsCapability -Online -Name "OpenSSH.Server*").Name
 Add-WindowsCapability -Online -Name $TargetCapability
 Set-Service -Name sshd -StartupType 'Automatic'

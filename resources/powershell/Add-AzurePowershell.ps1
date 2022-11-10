@@ -1,5 +1,5 @@
 # See https://learn.microsoft.com/en-us/powershell/azure/install-az-ps
-Write-Output "Installing Azure CLI Tools" -ForegroundColor Cyan
+Write-Output "Installing Azure CLI Tools"
 
 ${ReleaseVersion} = "9.1.0"
 ${ReleaseId} = "36571"
@@ -11,4 +11,4 @@ ${OutFile} = "D:\az-pwsh.msi" # temporary disk
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest -Uri ${DownloadUrl} -OutFile ${OutFile}
 Start-Process "msiexec.exe" -Wait -ArgumentList "/package ${OutFile}"
-
+Start-Sleep -Seconds 3

@@ -69,13 +69,15 @@ variable "vm_name" {
 }
 
 variable "iso_installer_path" {
-  type    = string
-  default = ""
+  description = "Windows installer ISO-image."
+  type        = string
+  default     = ""
 }
 
 variable "iso_tools_path" {
-  type    = string
-  default = "[] /usr/lib/vmware/isoimages/windows.iso"
+  description = "Required if installing VMware Tools from disk."
+  type        = string
+  default     = "[] /usr/lib/vmware/isoimages/windows.iso"
 }
 
 variable "admin" {
@@ -85,8 +87,8 @@ variable "admin" {
   })
 
   default = {
-    username = "packer"
-    password = "wind0ws"
+    username = "Packer"
+    password = "Wind0ws"
   }
 }
 

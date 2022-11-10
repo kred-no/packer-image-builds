@@ -11,7 +11,9 @@ param (
 
 function Log([String]${Logtext}) {
   ${Timestamp} = (Get-Date -UFormat %T).ToString()
+  $Host.UI.RawUI.ForegroundColor = 'Cyan'
   Write-Output "[${Timestamp}] ${Logtext}"
+  $Host.UI.RawUI.ForegroundColor = 'Gray'
 }
 
 # Define variables
@@ -69,3 +71,4 @@ Remove-Item -Path "${InstallDir}\${Name}_${SemVer}_SHA256SUMS.sig"
 Pop-Location
 
 Log "Done!"
+Start-Sleep -Seconds 3

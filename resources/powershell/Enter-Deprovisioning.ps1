@@ -1,6 +1,8 @@
 function Log([String]${logtext}) {
   ${timestamp} = (Get-Date -UFormat %T).ToString()
-  Write-Host "[${timestamp}] ${logtext}"
+  $Host.UI.RawUI.ForegroundColor = 'Cyan'
+  Write-Output "[${timestamp}] ${logtext}"
+  $Host.UI.RawUI.ForegroundColor = 'Gray'
 }
 
 Log "Waiting for GA Service (RdAgent) to start."
@@ -30,3 +32,4 @@ while(${true}) {
 }
 
 Log "Deprovisioning finished!"
+Start-Sleep -Seconds 3

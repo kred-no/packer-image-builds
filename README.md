@@ -2,17 +2,17 @@
 
 Public images built using HashiCorp Packer
 
-## VMware vSphere - Windows
-> Status: Working
-
-## VMware vSphere - Ubuntu
-> Status: Working
-
 ## Azure Windows Server
-> Status: Working
+> Status: OK
 
 ## Azure Windows Desktop
-> Status: Working
+> Status: OK
 
 ## Azure Debian Server
-> Status: Working
+> Status: OK
+
+## VMware vSphere - Windows
+> Status: OK
+
+## VMware vSphere - Ubuntu
+> Status: OK
