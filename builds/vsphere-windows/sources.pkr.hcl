@@ -83,8 +83,8 @@ source "vsphere-iso" "win2k22" {
     })
 
     "Set-AutoUpdateDisabled.ps1" = file(join("/", [var.resources_folder, "powershell/Set-AutoUpdateDisabled.ps1"]))
-    "Add-OpenSSH.ps1"               = file(join("/", [var.resources_folder, "powershell/Add-OpenSSH.ps1"]))
-    "Add-VMwareTools.ps1"           = file(join("/", [var.resources_folder, "powershell/Add-VMwareTools.ps1"]))
+    "Add-OpenSSH.ps1"            = file(join("/", [var.resources_folder, "powershell/Add-OpenSSH.ps1"]))
+    "Add-VMwareTools.ps1"        = file(join("/", [var.resources_folder, "powershell/Add-VMwareTools.ps1"]))
   }
 
   // Boot & Provisioning

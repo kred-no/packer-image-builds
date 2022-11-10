@@ -64,9 +64,9 @@ autoinstall:
       delay: 5
       mode: reboot
   late-commands: # OS mounted in /target
-  - "sed -i -e \"2s/^.*/datasource_list: [ VMware,None ]/g\" /target/etc/cloud/cloud.cfg.d/90_dpkg.cfg"
   - sed -i -e 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /target/etc/ssh/sshd_config
+  - "sed -i -e \"2s/^.*/datasource_list: [ VMware,None ]/g\" /target/etc/cloud/cloud.cfg.d/90_dpkg.cfg"
   - echo '${ username } ALL=(ALL) NOPASSWD:ALL' | tee /target/etc/sudoers.d/${ username }
-  - curtin in-target --target=/target -- chmod 440 /etc/sudoers.d/${ username }
   - curtin in-target --target=/target -- dpkg-reconfigure -f noninteractive cloud-init
+  - curtin in-target --target=/target -- chmod 440 /etc/sudoers.d/${ username }
   - curtin in-target --target=/target -- systemctl stop systemd-networkd-wait-online
