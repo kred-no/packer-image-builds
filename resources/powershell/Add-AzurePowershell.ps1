@@ -1,4 +1,6 @@
 # See https://learn.microsoft.com/en-us/powershell/azure/install-az-ps
+Write-Output "Installing Azure CLI Tools" -ForegroundColor Cyan
+
 ${ReleaseVersion} = "9.1.0"
 ${ReleaseId} = "36571"
 ${ReleaseDate} = "November2022"
