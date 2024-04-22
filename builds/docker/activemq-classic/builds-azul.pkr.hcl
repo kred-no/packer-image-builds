@@ -39,10 +39,6 @@ build {
   }
 
   provisioner "shell-local" {
-    execute_command = [
-      "{{ .Vars }}", "/bin/bash", "-c", "{{ .Script }}",
-    ]
-    
     environment_vars = [
       format("activemq_version=%s", var.activemq_version),
       format("jdbc_version=%s", var.postgres_jdbc_version),
@@ -54,20 +50,8 @@ build {
       "${path.root}/files/pre-provisioning-postgres.sh",
       "${path.root}/files/pre-provisioning-hawtio.sh",
     ]
-  }
-
-  provisioner "shell-local" {
-    inline = [
-      <<-HEREDOC
-      whoami
-      pwd
-      ls -lah
-      ls -lah ${path.root}
-      ls -lah ${path.root}/files
-      ls -lah ${path.root}/files/cache
-      ls -lah ${path.root}/files
-      HEREDOC
-    ]
+    
+    execute_command = ["/bin/bash", "-c", "{{ .Vars }}", "{{ .Script }}"]
   }
 
   //////////////////////
@@ -83,9 +67,9 @@ build {
     generated = true
 
     sources = [
-      "${path.root}/files/cache/apache-activemq-bin.tar.gz",
-      "${path.root}/files/cache/postgresql.jar",
-      "${path.root}/files/cache/hawtio-default.war",
+      "${path.root}/cache/apache-activemq-bin.tar.gz",
+      "${path.root}/cache/postgresql.jar",
+      "${path.root}/cache/hawtio-default.war",
     ]
 
     destination = "/tmp/"
@@ -102,7 +86,6 @@ build {
   //////////////////////
 
   provisioner "file" {
-    #source      = "${path.root}/files/docker-entrypoint.debian.sh"
     content = <<-HEREDOC
       #!/usr/bin/env bash
       bin/activemq console

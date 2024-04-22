@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -exu
+set -eu
 
 log(){
   printf "[%s] %s\n" "$(date -u)" "$1"
@@ -8,7 +8,6 @@ log(){
 # Validation
 if [ -z "jdbc_version" ]; then echo "Please set the 'jdbc_version' variable";exit 1;fi
 
-#tempdir=./cache
 tempdir=./files/cache
 mkdir -p ${tempdir}
 pushd ${tempdir}

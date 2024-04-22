@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -exu
+set -eu
 
 log(){
   printf "[%s] %s\n" "$(date -u)" "$1"
@@ -8,8 +8,7 @@ log(){
 # Validation
 if [ -z "activemq_version" ]; then log "Please set the 'activemq_version' variable";exit 1; fi
 
-#tempdir=./cache
-tempdir="./files/cache"
+tempdir="./cache"
 mkdir -p ${tempdir}
 pushd ${tempdir}
 

@@ -1,3 +1,10 @@
+variable "root_folder" {
+  description = "N/A"
+  type        = string
+  default     = env("GITHUB_WORKSPACE")
+  //default     = "./../../.."
+}
+
 variable "activemq_version" {
   description = "N/A"
   type        = string
