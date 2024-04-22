@@ -41,7 +41,7 @@ build {
   provisioner "shell-local" {
     #execute_command = ["/bin/bash", "-c", "{{.Vars}}", "{{.Script}}"]
     execute_command = [
-      "/bin/bash", "-c", "{{ .Vars }}", "{{ .Script }}",
+      "{{ .Vars }}", "{{ .Script }}",
     ]
     
     environment_vars = [
@@ -66,6 +66,7 @@ build {
       ls -lah ${path.root}
       ls -lah ${path.root}/files
       ls -lah ${path.root}/files/cache
+      ls -lah ${path.root}/files
       HEREDOC
     ]
   }
