@@ -38,7 +38,7 @@ build {
     note    = "Pre-Provisioning"
   }
 
-  provisioner "shell-local" {
+  /*provisioner "shell-local" {
     environment_vars = [
       format("temp_folder=%s", var.temp_folder),
       format("activemq_version=%s", var.activemq_version),
@@ -53,7 +53,7 @@ build {
     ]
     
     execute_command = ["/bin/bash", "-c", "{{ .Vars }}", "{{ .Script }}"]
-  }
+  }*/
 
   //////////////////////
   // Provision
@@ -68,9 +68,9 @@ build {
     generated = true
 
     sources = [
-      "${var.temp_folder}/apache-activemq-bin.tar.gz",
-      "${var.temp_folder}/postgresql.jar",
-      "${var.temp_folder}/hawtio-default.war",
+      "${var.resource_folder}/apache-activemq-bin.tar.gz",
+      "${var.resource_folder}/postgresql.jar",
+      "${var.resource_folder}/hawtio-default.war",
     ]
 
     destination = "/tmp/"

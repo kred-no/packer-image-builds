@@ -8,7 +8,7 @@ log(){
 # Validation
 if [ -z "activemq_version" ]; then log "Please set the 'activemq_version' variable";exit 1; fi
 
-tempdir=${temp_folder:-"./cache"}
+tempdir=${resource_folder:-"./../cache"}
 mkdir -p ${tempdir}
 pushd ${tempdir}
 

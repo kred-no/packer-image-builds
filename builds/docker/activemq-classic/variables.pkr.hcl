@@ -1,7 +1,6 @@
-variable "temp_folder" {
+variable "resource_folder" {
   description = "N/A"
   type        = string
-  #default     = "/tmp"
   default     = env("RUNNER_TEMP")
   #default     = env("GITHUB_WORKSPACE")
   #default     = "./../../.."

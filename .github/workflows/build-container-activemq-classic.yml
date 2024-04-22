@@ -5,6 +5,9 @@ on:
   #push:
   workflow_dispatch:
 
+env:
+  resource_folder: $RUNNER_TEMP
+
 jobs:
   packer:
     runs-on: ubuntu-latest
@@ -21,11 +24,19 @@ jobs:
       with:
         version: "latest"
     -
-      name: Initialize
+      name: Pre-Build
       working-directory: ./builds/docker/activemq-classic
-      id: init
+      id: pre
       run: |
-        set -x  
+        set -x
+        ./files/pre-provisioning-activemq.sh
+        ./files/pre-provisioning-hawtio.sh
+        ./files/pre-provisioning-postgres.sh
+    -
+      name: Build
+      working-directory: ./builds/docker/activemq-classic
+      id: build
+      run: |
         packer init -upgrade .
         packer validate .
         packer build -color=false -on-error=abort .
