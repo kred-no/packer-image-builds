@@ -5,10 +5,6 @@ on:
   #push:
   workflow_dispatch:
 
-env:
-  PACKER_VERSION: "latest"
-  PACKER_CONTEXT: ./builds/docker/activemq-classic
-
 jobs:
   packer:
     runs-on: ubuntu-latest
@@ -18,27 +14,18 @@ jobs:
       name: Checkout
       uses: actions/checkout@v3
       id: checkout
-    #-
-    #  name: Setup
-    #  uses: hashicorp/setup-packer@main
-    #  id: setup
-    #  with:
-    #    version: ${{ env.PACKER_VERSION }}
+    -
+      name: Setup
+      uses: hashicorp/setup-packer@main
+      id: setup
+      with:
+        version: "latest"
     -
       name: Initialize
-      working-directory: ${{ env.PACKER_CONTEXT }}
+      working-directory: ./builds/docker/activemq-classic
       id: init
       run: |
+        set -x  
         packer init -upgrade .
-    -
-      name: Validate
-      working-directory: ${{ env.PACKER_CONTEXT }}
-      id: validate
-      run: |
         packer validate .
-    -
-      name: Build
-      working-directory: ${{ env.PACKER_CONTEXT }}
-      id: build
-      run: |
         packer build -color=false -on-error=abort .
