@@ -57,6 +57,19 @@ build {
     ]
   }
 
+  provisioner "shell-local" {
+    inline = [
+      <<-HEREDOC
+      whoami
+      pwd
+      ls -lah
+      ls -lah ${path.root}
+      ls -lah ${path.root}/files
+      ls -lah ${path.root}/files/cache
+      HEREDOC
+    ]
+  }
+
   //////////////////////
   // Provision
   //////////////////////
