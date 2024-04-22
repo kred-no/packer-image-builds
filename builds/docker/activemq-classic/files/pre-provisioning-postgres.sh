@@ -8,10 +8,6 @@ log(){
 # Validation
 if [ -z "jdbc_version" ]; then echo "Please set the 'jdbc_version' variable";exit 1;fi
 
-tempdir=${temp_folder:-"./../cache"}
-mkdir -p ${tempdir}
-pushd ${tempdir}
-
 # //////////////////////
 # // Download Postgres JDBC
 # //////////////////////
@@ -45,5 +41,3 @@ log "[Postgres-JDBC] Checksum OK; Finished"
 # //////////////////////
 # // Done
 # //////////////////////
-
-popd

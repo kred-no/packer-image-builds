@@ -68,9 +68,9 @@ build {
     generated = true
 
     sources = [
-      "${var.resource_folder}/apache-activemq-bin.tar.gz",
-      "${var.resource_folder}/postgresql.jar",
-      "${var.resource_folder}/hawtio-default.war",
+      "${path.root}/apache-activemq-bin.tar.gz",
+      "${path.root}/postgresql.jar",
+      "${path.root}/hawtio-default.war",
     ]
 
     destination = "/tmp/"

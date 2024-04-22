@@ -8,11 +8,6 @@ log(){
 # Validation
 if [ -z "hawtio_version" ]; then echo "Please set the 'hawtio_version' variable";exit 1; fi
 
-#tempdir=./cache
-tempdir=${temp_folder:-"./../cache"}
-mkdir -p ${tempdir}
-pushd ${tempdir}
-
 # //////////////////////
 # // Download HawtIO
 # //////////////////////
@@ -46,5 +41,3 @@ log "[HawtIO] Checksum OK; Finished"
 # //////////////////////
 # // Done
 # //////////////////////
-
-popd

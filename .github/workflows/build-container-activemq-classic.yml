@@ -31,10 +31,12 @@ jobs:
       working-directory: ./builds/docker/activemq-classic
       id: pre
       run: |
+        pwd
         chmod +rx ./files/*.sh
         ./files/pre-provisioning-activemq.sh
         ./files/pre-provisioning-hawtio.sh
         ./files/pre-provisioning-postgres.sh
+        ls -lah
     -
       name: Build
       working-directory: ./builds/docker/activemq-classic
