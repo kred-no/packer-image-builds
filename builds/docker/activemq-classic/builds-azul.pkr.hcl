@@ -39,9 +39,8 @@ build {
   }
 
   provisioner "shell-local" {
-    #execute_command = ["/bin/bash", "-c", "{{.Vars}}", "{{.Script}}"]
     execute_command = [
-      "{{ .Vars }}", "{{ .Script }}",
+      "{{ .Vars }}", "/bin/bash", "-c", "{{ .Script }}",
     ]
     
     environment_vars = [
