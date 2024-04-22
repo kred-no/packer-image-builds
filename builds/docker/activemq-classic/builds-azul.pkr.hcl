@@ -39,6 +39,13 @@ build {
   }
 
   provisioner "shell-local" {
+    #execute_command = ["/bin/bash", "-c", "{{.Vars}}", "{{.Script}}"]
+    execute_command = [
+      "chmod", "+x", "{{.Script}}",";"
+      "/bin/bash", "-c",
+      "{{.Vars}}", "{{.Script}}",
+    ]
+    
     environment_vars = [
       format("activemq_version=%s", var.activemq_version),
       format("jdbc_version=%s", var.postgres_jdbc_version),
