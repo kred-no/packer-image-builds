@@ -7,6 +7,9 @@ on:
 
 env:
   resource_folder: $RUNNER_TEMP
+  activemq_version: '6.1.2'
+  postgres_jdbc_version: '42.7.3'
+  hawtio_version: '4.0.0'
 
 jobs:
   packer:
