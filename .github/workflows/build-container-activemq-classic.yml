@@ -28,7 +28,7 @@ jobs:
       with:
         version: "latest"
     -
-      name: Pre-Build
+      name: Pre-Build # Since shell-local fails ..
       working-directory: ./builds/docker/activemq-classic # /home/runner/work/packer-image-builds/packer-image-builds/builds/docker/activemq-classic
       id: pre
       run: |
@@ -36,6 +36,13 @@ jobs:
         ./files/pre-provisioning-activemq.sh
         ./files/pre-provisioning-hawtio.sh
         ./files/pre-provisioning-postgres.sh
+    #-
+    #  name: Login to GitHub Container Registry
+    #  uses: docker/login-action@v3
+    #  with:
+    #    registry: ghcr.io
+    #    username: ${{ github.actor }}
+    #    password: ${{ secrets.GITHUB_TOKEN }}
     -
       name: Build
       working-directory: ./builds/docker/activemq-classic
@@ -45,7 +52,7 @@ jobs:
         packer validate .
         packer build -color=false -on-error=abort .
       env:
-        PKR_VAR_registry_server: ghcr.io
         PKR_VAR_repository: "${{ github.repository }}/activemq-classic"
+        PKR_VAR_registry_server: ghcr.io
         PKR_VAR_registry_username: ${{ github.actor }}
-        PKR_VAR_registry_password: ${{ github.token }}
+        PKR_VAR_registry_password: ${{ secrets.GITHUB_TOKEN }}

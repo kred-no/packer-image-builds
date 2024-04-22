@@ -26,20 +26,20 @@ variable "hawtio_version" {
 
 variable "repository" {
   type    = string
-  default = env("GITHUB_REPOSITORY")
+  default = "local/activemq" #env("GITHUB_REPOSITORY")
 }
 
 variable "registry_server" {
   type    = string
-  default = "ghcr.io"
+  default = "" #"ghcr.io"
 }
 
 variable "registry_password" {
   type    = string
-  default = env("GITHUB_TOKEN")
+  default = "" #env("GITHUB_TOKEN")
 }
 
 variable "registry_username" {
   type    = string
-  default = env("GITHUB_ACTOR")
+  default = "" #env("GITHUB_ACTOR")
 }

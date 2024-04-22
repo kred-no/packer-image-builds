@@ -33,12 +33,8 @@ build {
   // Pre-Provision (Local)
   //////////////////////
 
-  provisioner "breakpoint" {
-    disable = true
-    note    = "Pre-Provisioning"
-  }
-
-  /*provisioner "shell-local" {
+  /* FAILS when using github workflow
+  provisioner "shell-local" {
     environment_vars = [
       format("temp_folder=%s", var.temp_folder),
       format("activemq_version=%s", var.activemq_version),
@@ -95,9 +91,7 @@ build {
   }
 
   provisioner "shell" {
-    inline = [
-      "chmod +rx /usr/local/bin/docker-entrypoint.sh"
-    ]
+    inline = ["chmod +rx /usr/local/bin/docker-entrypoint.sh"]
   }
 
   //////////////////////
