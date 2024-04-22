@@ -45,7 +45,7 @@ jobs:
         packer validate .
         packer build -color=false -on-error=abort .
       env:
-        registry_server: ghcr.io
-        repository: ${{ github.repository }}/activemq-classic
-        registry_username: ${{ github.actor }}
-        registry_password: ${{ github.token }}
+        PKR_VAR_registry_server: ghcr.io
+        PKR_VAR_repository: "${{ github.repository }}/activemq-classic"
+        PKR_VAR_registry_username: ${{ github.actor }}
+        PKR_VAR_registry_password: ${{ github.token }}
