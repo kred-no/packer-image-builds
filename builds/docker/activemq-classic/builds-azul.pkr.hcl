@@ -112,7 +112,8 @@ build {
   post-processors {
 
     post-processor "docker-tag" {
-      repository = "local/activemq"
+      #repository = "local/activemq"
+      repository = var.repository
 
       tags = [
         "latest",
@@ -121,14 +122,13 @@ build {
       ]
     }
 
-    /*
     post-processor "docker-push" {
       name = "push"
 
       login          = true
-      login_server   = "xx"
-      login_username = "xx"
-      login_password = "xx"
-    }*/
+      login_server   = var.registry_server
+      login_username = var.registry_username
+      login_password = var.registry_password
+    }
   }
 }

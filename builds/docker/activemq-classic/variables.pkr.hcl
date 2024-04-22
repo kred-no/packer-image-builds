@@ -23,3 +23,23 @@ variable "hawtio_version" {
   type        = string
   default     = "4.0.0"
 }
+
+variable "repository" {
+  type    = string
+  default = env("GITHUB_REPOSITORY")
+}
+
+variable "registry_server" {
+  type    = string
+  default = "ghcr.io"
+}
+
+variable "registry_password" {
+  type    = string
+  default = env("GITHUB_TOKEN")
+}
+
+variable "registry_username" {
+  type    = string
+  default = env("GITHUB_ACTOR")
+}
