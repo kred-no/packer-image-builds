@@ -18,21 +18,26 @@ jobs:
       name: Checkout
       uses: actions/checkout@v3
     -
-      name: Setup Packer environment
+      name: Setup
       uses: hashicorp/setup-packer@main
       id: setup
       with:
         version: ${{ env.PACKER_VERSION }}
     -
-      name: Initialize Packer
+      name: Initialize
+      working-directory: ${{ env.PACKER_CONTEXT }}
       id: init
       run: >
-        packer init ${{ env.PACKER_CONTEXT }}
+        packer init -upgrade .
     -
       name: Validate
+      working-directory: ${{ env.PACKER_CONTEXT }}
       id: validate
       run: >
-        packer validate ${{ env.PACKER_CONTEXT }}
+        packer validate .
     -
-      name: Build Artifact
-      run: packer build -color=false -on-error=abort ${{ env.PACKER_CONTEXT }}
+      name: Build
+      working-directory: ${{ env.PACKER_CONTEXT }}
+      id: build
+      run: >
+        packer build -color=false -on-error=abort .
