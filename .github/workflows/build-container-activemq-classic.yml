@@ -17,27 +17,28 @@ jobs:
     -
       name: Checkout
       uses: actions/checkout@v3
-    -
-      name: Setup
-      uses: hashicorp/setup-packer@main
-      id: setup
-      with:
-        version: ${{ env.PACKER_VERSION }}
+      id: checkout
+    #-
+    #  name: Setup
+    #  uses: hashicorp/setup-packer@main
+    #  id: setup
+    #  with:
+    #    version: ${{ env.PACKER_VERSION }}
     -
       name: Initialize
       working-directory: ${{ env.PACKER_CONTEXT }}
       id: init
-      run: >
+      run: |
         packer init -upgrade .
     -
       name: Validate
       working-directory: ${{ env.PACKER_CONTEXT }}
       id: validate
-      run: >
+      run: |
         packer validate .
     -
       name: Build
       working-directory: ${{ env.PACKER_CONTEXT }}
       id: build
-      run: >
+      run: |
         packer build -color=false -on-error=abort .
