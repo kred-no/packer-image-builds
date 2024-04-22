@@ -1,14 +1,13 @@
-# Secrets
-*auto.pkrvars.hcl
+# Files
 
-# Cache objects
-**/packer_cache/*
-
-# Crash log
 crash.log
 
-# For built boxes
+*auto.pkrvars.hcl
 *.box
+*.bak
 
-# Other
-_*
+# Folders
+
+**/packer_cache/*
+**/boxes/*
+**/cache/*

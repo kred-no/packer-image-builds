@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.require_version ">= 2.4.0"
+
+#require 'yaml'
+#current_dir = File.dirname(File.expand_path(__FILE__))
+#user_config = YAML.load_file("#{current_dir}/config.yml")
+
+Vagrant.configure "2" do |config|
+  config.vm.box         = "w2k22-base"
+  #config.vm.box_version = "1.0.0"
+
+  config.vm.guest = :windows
+
+  config.vm.communicator = :ssh
+  config.ssh.username    = "vagrant"
+  config.ssh.password    = "vagrant"
+
+  config.vm.provider :hyperv do |h|
+    h.cpus      = 2
+    h.memory    = 1024
+    h.maxmemory = 2048
+    h.vm_integration_services = {
+      guest_service_interface: true
+    }
+  end
+end

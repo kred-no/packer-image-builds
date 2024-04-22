@@ -1,0 +1,36 @@
+name: build-container-activemq-classic
+
+on:
+  push:
+
+env:
+  PACKER_VERSION: "latest"
+  PACKER_CONTEXT: ./builds/docker/activemq-classic
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v3
+    -
+      name: Setup Packer environment
+      uses: hashicorp/setup-packer@main
+      id: setup
+      with:
+        version: ${{ env.PACKER_VERSION }}
+    -
+      name: Initialize Packer
+      id: init
+      run: >
+        packer init ${{ env.PACKER_CONTEXT }}
+    -
+      name: Validate
+      id: validate
+      run: >
+        packer validate ${{ env.PACKER_CONTEXT }}
+    -
+      name: Build Artifact
+      run: packer build -color=false -on-error=abort ${{ env.PACKER_CONTEXT }}
