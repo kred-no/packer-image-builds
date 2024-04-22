@@ -40,7 +40,7 @@ build {
 
   provisioner "shell-local" {
     environment_vars = [
-      "temp_folder=${path.root}/cache",
+      format("temp_folder=%s", var.temp_folder),
       format("activemq_version=%s", var.activemq_version),
       format("jdbc_version=%s", var.postgres_jdbc_version),
       format("hawtio_version=%s", var.hawtio_version),
@@ -68,9 +68,9 @@ build {
     generated = true
 
     sources = [
-      "${path.root}/cache/apache-activemq-bin.tar.gz",
-      "${path.root}/cache/postgresql.jar",
-      "${path.root}/cache/hawtio-default.war",
+      "${var.temp_folder}/apache-activemq-bin.tar.gz",
+      "${var.temp_folder}/postgresql.jar",
+      "${var.temp_folder}/hawtio-default.war",
     ]
 
     destination = "/tmp/"

@@ -1,9 +1,10 @@
 variable "temp_folder" {
   description = "N/A"
   type        = string
+  #default     = "/tmp"
   default     = env("RUNNER_TEMP")
   #default     = env("GITHUB_WORKSPACE")
-  //default     = "./../../.."
+  #default     = "./../../.."
 }
 
 variable "activemq_version" {
