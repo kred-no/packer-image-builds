@@ -1,7 +1,8 @@
 name: build-container-activemq-classic
 
 on:
-  push:
+  #push:
+  workflow_dispatch:
 
 env:
   PACKER_VERSION: "latest"
