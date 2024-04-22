@@ -40,6 +40,7 @@ build {
 
   provisioner "shell-local" {
     environment_vars = [
+      "temp_folder=${path.root}/cache",
       format("activemq_version=%s", var.activemq_version),
       format("jdbc_version=%s", var.postgres_jdbc_version),
       format("hawtio_version=%s", var.hawtio_version),
