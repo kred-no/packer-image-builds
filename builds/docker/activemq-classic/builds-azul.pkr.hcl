@@ -41,7 +41,7 @@ build {
   provisioner "shell-local" {
     #execute_command = ["/bin/bash", "-c", "{{.Vars}}", "{{.Script}}"]
     execute_command = [
-      "chmod", "+x", "{{.Script}}",";"
+      "chmod", "+x", "{{.Script}}", ";",
       "/bin/bash", "-c",
       "{{.Vars}}", "{{.Script}}",
     ]
