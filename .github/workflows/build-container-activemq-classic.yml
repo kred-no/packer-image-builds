@@ -28,7 +28,7 @@ jobs:
       working-directory: ./builds/docker/activemq-classic
       id: pre
       run: |
-        set -x
+        chmod +rx ./files/*.sh
         ./files/pre-provisioning-activemq.sh
         ./files/pre-provisioning-hawtio.sh
         ./files/pre-provisioning-postgres.sh
