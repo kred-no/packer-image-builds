@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu
+set -exu
 
 log(){
   printf "[%s] %s\n" "$(date -u)" "$1"
