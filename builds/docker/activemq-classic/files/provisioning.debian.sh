@@ -24,18 +24,20 @@ rm -rf ${TEMPDIR}/apache-activemq-bin.tar.gz
 
 
 # //////////////////////
-# Customization
+# Set Container Defaults
 # //////////////////////
 
 sed -i 's/127.0.0.1/0.0.0.0/g' "${ACTIVEMQ_HOME}/conf/jetty.xml"
 sed -i 's/127.0.0.1/0.0.0.0/g' "${ACTIVEMQ_HOME}/conf/activemq.xml"
 
-# v6.x.x
-sed -ri 's/^(\s*)ACTIVEMQ_OPTS_MEMORY=(.*)/\1ACTIVEMQ_OPTS_MEMORY="-XX:MaxRAMPercentage=85.0 -XX:InitialRAMPercentage=85.0 -XX:+ExitOnOutOfMemoryError"/g' "${ACTIVEMQ_HOME}/bin/setenv"
-
-# LEGACY: v5.x.x
-if [[ ${activemq_version:0:1} == "5" ]]; then
+# v5.x.x
+if [[ -f "${ACTIVEMQ_HOME}/bin/env" ]];then
   sed -ri 's/^(\s*)ACTIVEMQ_OPTS_MEMORY=(.*)/\1ACTIVEMQ_OPTS_MEMORY="-XX:MaxRAMPercentage=85.0 -XX:InitialRAMPercentage=85.0 -XX:+ExitOnOutOfMemoryError"/g' "${ACTIVEMQ_HOME}/bin/env"
+fi
+
+# v6.x.x
+if [[ -f "${ACTIVEMQ_HOME}/bin/setenv" ]]; then
+  sed -ri 's/^(\s*)ACTIVEMQ_OPTS_MEMORY=(.*)/\1ACTIVEMQ_OPTS_MEMORY="-XX:MaxRAMPercentage=85.0 -XX:InitialRAMPercentage=85.0 -XX:+ExitOnOutOfMemoryError"/g' "${ACTIVEMQ_HOME}/bin/setenv"
 fi
 
 # //////////////////////
