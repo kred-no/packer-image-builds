@@ -34,4 +34,5 @@ jobs:
       working-directory: ./builds/docker/payara-server
       id: build
       run: |
+        packer init -upgrade .
         packer build -except="push" .
