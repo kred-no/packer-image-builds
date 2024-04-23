@@ -44,6 +44,19 @@ build {
   sources = ["source.docker.default-jre-21"]
 
   //////////////////////
+  // Pre-Provision (Local)
+  //////////////////////
+
+  provisioner "shell-local" {
+    scripts = [
+      "./files/pre-jdbc-postgres.sh",
+      "./files/pre-jdbc-mssql.sh",
+      "./files/pre-activemq-rar.sh",
+      "./files/pre-payara-server.sh",
+    ]
+  }
+
+  //////////////////////
   // Provision
   //////////////////////
 
@@ -52,12 +65,20 @@ build {
     generated = true
 
     sources = [
+      "./files/startInForeground.sh",
+      "./postgres.jar",
+      "./mssql.jar",
+      "./activemq-rar.rar",
+      "./payara.zip",
+    ]
+
+    /*sources = [
       format("%s/payara.zip", var.resource_folder),
       format("%s/postgres.jar", var.resource_folder),
       format("%s/mssql.jar", var.resource_folder),
       format("%s/activemq-rar.rar", var.resource_folder),
       "./files/startInForeground.sh",
-    ]
+    ]*/
 
     destination = "/tmp/"
   }
@@ -87,7 +108,7 @@ build {
   //////////////////////
 
   provisioner "file" {
-    content     = <<-HEREDOC
+    content = <<-HEREDOC
       #!/bin/bash
       set -x
       for f in $SCRIPT_DIR/init_* $SCRIPT_DIR/init.d/*; do
