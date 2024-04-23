@@ -34,7 +34,7 @@ jobs:
       with:
         version: "latest"
     -
-      name: Pre-Build # Since shell-local fails ..
+      name: Pre-Build # shell-local provisioning fails
       working-directory: ./builds/docker/activemq-classic # /home/runner/work/packer-image-builds/packer-image-builds/builds/docker/activemq-classic
       id: pre
       run: |
@@ -53,8 +53,6 @@ jobs:
         packer validate .
         packer build -color=false -on-error=abort .
       env:
-        #PKR_VAR_resource_folder: ${{ runner.temp }}/cache
-        #PKR_VAR_resource_folder: ${{ github.workspace }}/cache
         PKR_VAR_activemq_version: ${{ matrix.activemq_version }}
         PKR_VAR_repository: "ghcr.io/${{ github.repository }}/activemq-classic"
         PKR_VAR_registry_server: ghcr.io

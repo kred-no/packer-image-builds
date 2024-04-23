@@ -52,7 +52,7 @@ mv ${TEMPDIR}/postgresql.jar ${ACTIVEMQ_HOME}/lib/optional/
 # //////////////////////
 
 mkdir -p ${ACTIVEMQ_HOME}/webapps/hawtio/
-mv ${TEMPDIR}/hawtio-default.war ${ACTIVEMQ_HOME}/lib/optional/
+mv ${TEMPDIR}/hawtio-default.war ${ACTIVEMQ_HOME}/webapps/hawtio/
 
 # //////////////////////
 # // Users & Permissions
