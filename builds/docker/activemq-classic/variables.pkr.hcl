@@ -3,7 +3,7 @@ variable "resource_folder" {
   type        = string
   #default     = env("RUNNER_TEMP")
   #default     = env("GITHUB_WORKSPACE")
-  default     = "./cache"
+  default     = "."
 }
 
 variable "activemq_version" {

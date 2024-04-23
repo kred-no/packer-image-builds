@@ -17,8 +17,6 @@ jdbc_filename="postgresql"
 # // Download JDBC
 # //////////////////////
 
-pushd ${resource_folder:-"./cache"}
-
 log "[Postgres-JDBC] Processing v${jdbc_version}"
 
 curl --silent --retry 3 -L "${jdbc_url}.sha1" -o "${jdbc_filename}.sha1"
@@ -41,8 +39,6 @@ if [[ ! -f "${jdbc_filename}.jar" ]]; then
 fi
 
 log "[Postgres-JDBC] Checksum OK; Finished"
-
-popd
 
 # //////////////////////
 # // Done

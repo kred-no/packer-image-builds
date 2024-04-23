@@ -17,8 +17,6 @@ hawtio_filename="hawtio-default"
 # // Download HawtIO
 # //////////////////////
 
-pushd ${resource_folder:-"./cache"}
-
 log "[HawtIO] Processing v${hawtio_version}"
 
 curl --silent --retry 3 -L "${hawtio_url}.sha1" -o "${hawtio_filename}.sha1"
@@ -41,8 +39,6 @@ if [[ ! -f "${hawtio_filename}.war" ]]; then
 fi
 
 log "[HawtIO] Checksum OK; Finished"
-
-popd
 
 # //////////////////////
 # // Done

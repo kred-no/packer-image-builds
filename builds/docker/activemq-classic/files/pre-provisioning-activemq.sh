@@ -17,8 +17,6 @@ activemq_filename="apache-activemq"
 # // Download ActiveMQ
 # //////////////////////
 
-pushd ${resource_folder:-"./cache"}
-
 log "[ActiveMQ] Processing v${activemq_version}"
 curl --silent --retry 3  -L "${activemq_url}.sha512" -o "${activemq_filename}.sha512"
 
@@ -40,8 +38,6 @@ if [[ ! -f "${activemq_filename}-bin.tar.gz" ]]; then
 fi
 
 log "[ActiveMQ] Checksum OK; Finished!"
-
-popd
 
 # //////////////////////
 # // Done

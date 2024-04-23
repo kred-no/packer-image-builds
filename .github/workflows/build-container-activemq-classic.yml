@@ -35,20 +35,20 @@ jobs:
         version: "latest"
     -
       name: Pre-Build # Since shell-local fails ..
-      working-directory: ./builds/docker/activemq-classic # /home/runner/work/packer-image-builds/packer-image-builds/builds/docker/activemq-classic
+      #working-directory: ./builds/docker/activemq-classic # /home/runner/work/packer-image-builds/packer-image-builds/builds/docker/activemq-classic
+      working-directory: ${{ runner.temp }} # /home/runner/work/packer-image-builds/packer-image-builds/builds/docker/activemq-classic
       id: pre
       run: |
-        mkdir -p ${{ runner.temp }}/cache
-        chmod +rx ./files/*.sh
-        ./files/pre-provisioning-activemq.sh
-        ./files/pre-provisioning-hawtio.sh
-        ./files/pre-provisioning-postgres.sh
-        ls -lh ${{ runner.temp }}/cache
+        chmod +rx ${{ github.workspace }}/files/*.sh
+        ${{ github.workspace }}/files/pre-provisioning-activemq.sh
+        ${{ github.workspace }}/files/pre-provisioning-hawtio.sh
+        ${{ github.workspace }}/files/pre-provisioning-postgres.sh
       env:
         activemq_version: ${{ matrix.activemq_version }}
     -
       name: Build
-      working-directory: ./builds/docker/activemq-classic
+      #working-directory: ./builds/docker/activemq-classic
+      working-directory: ${{ github.workspace }}
       id: build
       run: |
         packer init -upgrade .
@@ -56,6 +56,7 @@ jobs:
         packer build -color=false -on-error=abort .
       env:
         PKR_VAR_resource_folder: ${{ runner.temp }}/cache
+        #PKR_VAR_resource_folder: ${{ github.workspace }}
         PKR_VAR_activemq_version: ${{ matrix.activemq_version }}
         PKR_VAR_repository: "ghcr.io/${{ github.repository }}/activemq-classic"
         PKR_VAR_registry_server: ghcr.io
