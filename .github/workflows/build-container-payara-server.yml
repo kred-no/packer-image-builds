@@ -40,7 +40,7 @@ jobs:
       id: init
       run: |
         packer init -upgrade .
-        packer validate -upgrade .
+        packer validate .
     -
       name: Packer Build
       working-directory: ./builds/docker/payara-server
