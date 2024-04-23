@@ -110,7 +110,7 @@ build {
 
       tags = [
         var.activemq_version,
-        format("%-latest", var.activemq_version),
+        format("%s-latest", var.activemq_version),
         format("%s-%s", var.activemq_version, local.timestamp),
       ]
     }
