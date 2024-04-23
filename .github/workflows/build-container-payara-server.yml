@@ -39,7 +39,7 @@ jobs:
         chmod +rx ./files/*.sh
         ./files/pre-activemq-rar.sh
         ./files/pre-jdbc-postgres.sh
-        ./files/pre-jdbc-mssql.sh
+        ./files/pre-jdbc-mssql-jre11.sh
         ./files/pre-payara-server.sh
         ls -lah
         mv *.rar ${{ runner.temp }}/
