@@ -6,10 +6,13 @@ on:
   workflow_dispatch:
 
 # Shared ENV for all steps/tasks
-env: {}
+env:
+  ACTIVEMQ_RAR_VERSION: "6.1.2"
+  POSTGRES_JDBC_VERSION: "42.7.3"
+  MSSQL_JDBC_VERSION: "12.6.1"
 
 jobs:
-  packer:
+  packer-java-21:
     runs-on: ubuntu-latest
     name: Run Packer
 
@@ -17,6 +20,8 @@ jobs:
       matrix:
         payara_version:
         - '6.2024.4'
+        image:
+        - azul/zulu-openjdk-debian:21-jre-headless
 
     steps:
     -
@@ -25,14 +30,30 @@ jobs:
       id: checkout
     -
       name: Setup
-      uses: hashicorp/setup-packer@main
+      uses: hashicorp/setup-packer@v3
       id: setup
       with:
         version: "latest"
     -
-      name: Build
+      name: Packer Init
+      working-directory: ./builds/docker/payara-server
+      id: init
+      run: |
+        packer init -upgrade .
+        packer validate -upgrade .
+    -
+      name: Packer Build
       working-directory: ./builds/docker/payara-server
       id: build
       run: |
-        packer init -upgrade .
-        packer build -except="push" .
+        packer build .
+      env:
+        PKR_VAR_repository: ghcr.io/${{ github.repository }}/payara-server
+        PKR_VAR_registry_server: ghcr.io
+        PKR_VAR_registry_username: ${{ github.actor }}
+        PKR_VAR_registry_password: ${{ secrets.GITHUB_TOKEN }}
+        PKR_VAR_activemq_version: ${{ env.ACTIVEMQ_RAR_VERSION }}
+        PKR_VAR_jdbc_postgres_version: ${{ env.POSTGRES_JDBC_VERSION }}
+        PKR_VAR_jdbc_mssql_version: ${{ env.MSSQL_JDBC_VERSION }}
+        PKR_VAR_base_image_jre21: ${{ matrix.image }}
+        PKR_VAR_payara_version: ${{ matrix.payara_version }}

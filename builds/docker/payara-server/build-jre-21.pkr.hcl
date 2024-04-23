@@ -6,27 +6,29 @@ source docker "default-jre-21" {
   image  = var.base_image_jre21
   commit = true // Committed & re-tagged in post-processing
 
+  // Update Container
+
   changes = [
-    "ENV ADMIN_USER=admin",
-    "ENV ADMIN_PASSWORD=admin",
-    "ENV HOME_DIR=/opt/payara",
-    "ENV PAYARA_DIR=$HOME_DIR/appserver",
-    "ENV SCRIPT_DIR=$HOME_DIR/scripts",
-    "ENV CONFIG_DIR=$HOME_DIR/config",
-    "ENV DEPLOY_DIR=$HOME_DIR/deployments",
-    "ENV PASSWORD_FILE=$HOME_DIR/passwordFile",
-    "ENV JVM_ARGS=",
-    "ENV MEM_MAX_RAM_PERCENTAGE=80.0",
-    "ENV MEM_XSS=512k",
-    "ENV DOMAIN_NAME='domain1'",
-    "ENV PAYARA_ARGS=",
-    "ENV DEPLOY_PROPS=",
-    "ENV PATH=$PATH:$PAYARA_DIR/bin",
-    "ENV PREBOOT_COMMANDS=$CONFIG_DIR/pre-boot-commands.asadmin",
-    "ENV PREBOOT_COMMANDS_FINAL=$CONFIG_DIR/pre-boot-commands-final.asadmin",
-    "ENV POSTBOOT_COMMANDS=$CONFIG_DIR/post-boot-commands.asadmin",
-    "ENV POSTBOOT_COMMANDS_FINAL=$CONFIG_DIR/post-boot-commands-final.asadmin",
-    "EXPOSE 8080 4848",
+    format("ENV %s=%s", "ADMIN_USER", var.payara_admin_username),
+    #format("ENV %s=%s", "ADMIN_PASSWORD", var.payara_admin_password),
+    format("ENV %s=%s", "HOME_DIR", "/opt/payara"),
+    format("ENV %s=%s", "PAYARA_DIR", "$HOME_DIR/appserver"),
+    format("ENV %s=%s", "SCRIPT_DIR", "$HOME_DIR/scripts"),
+    format("ENV %s=%s", "CONFIG_DIR", "$HOME_DIR/config"),
+    format("ENV %s=%s", "DEPLOY_DIR", "$HOME_DIR/deployments"),
+    format("ENV %s=%s", "PASSWORD_FILE", "$HOME_DIR/passwordFile"),
+    format("ENV %s=%s", "JVM_ARGS", ""),
+    format("ENV %s=%s", "MEM_MAX_RAM_PERCENTAGE", "80.0"),
+    format("ENV %s=%s", "MEM_XSS", "512k"),
+    format("ENV %s=%s", "DOMAIN_NAME", "domain1"),
+    format("ENV %s=%s", "PAYARA_ARGS", ""),
+    format("ENV %s=%s", "DEPLOY_PROPS", ""),
+    format("ENV %s=%s", "PATH", "$PATH:$PAYARA_DIR/bin"),
+    format("ENV %s=%s", "PREBOOT_COMMANDS", "$CONFIG_DIR/pre-boot-commands.asadmin"),
+    format("ENV %s=%s", "PREBOOT_COMMANDS_FINAL", "$CONFIG_DIR/pre-boot-commands-final.asadmin"),
+    format("ENV %s=%s", "POSTBOOT_COMMANDS", "$CONFIG_DIR/post-boot-commands.asadmin"),
+    format("ENV %s=%s", "POSTBOOT_COMMANDS_FINAL", "$CONFIG_DIR/post-boot-commands-final.asadmin"),
+    join(" ", ["EXPOSE", "8080", "4848"]),
     "VOLUME /opt/payara/data",
     "USER payara",
     "WORKDIR /opt/payara",
@@ -43,63 +45,28 @@ build {
   name    = "jre-21"
   sources = ["source.docker.default-jre-21"]
 
-  //////////////////////
-  // Pre-Provision (Local)
-  //////////////////////
+  // Provisioning
 
-  provisioner "shell-local" {
-    inline = ["chmod +rx ./files/*.sh"]
-  }
-
-  provisioner "shell-local" {
-    scripts = [
-      "./files/pre-jdbc-postgres.sh",
-      "./files/pre-jdbc-mssql-jre11.sh",
-      "./files/pre-activemq-rar.sh",
-      "./files/pre-payara-server.sh",
-    ]
-  }
-
-  //////////////////////
-  // Provision
-  //////////////////////
-
-  # Copy files from runner
   provisioner "file" {
-    generated = true
-
     sources = [
-      "./files/startInForeground.sh",
-      "./postgres.jar",
-      "./mssql.jar",
-      "./activemq-rar.rar",
-      "./payara.zip",
+      "${path.root}/files/startInForeground.sh",
+      "${path.root}/files/pre-jdbc-postgres.sh",
+      "${path.root}/files/pre-jdbc-mssql-jre11.sh",
+      "${path.root}/files/pre-activemq-rar.sh",
+      "${path.root}/files/pre-payara-server.sh",
     ]
-
-    /*sources = [
-      format("%s/payara.zip", var.resource_folder),
-      format("%s/postgres.jar", var.resource_folder),
-      format("%s/mssql.jar", var.resource_folder),
-      format("%s/activemq-rar.rar", var.resource_folder),
-      "./files/startInForeground.sh",
-    ]*/
 
     destination = "/tmp/"
   }
 
   provisioner "shell" {
     environment_vars = [
-      "ADMIN_USER=admin",
-      "ADMIN_PASSWORD=admin",
-      "HOME_DIR=/opt/payara",
-      "PAYARA_DIR=/opt/payara/appserver",
-      "SCRIPT_DIR=/opt/payara/scripts",
-      "CONFIG_DIR=/opt/payara/config",
-      "DEPLOY_DIR=/opt/payara/deployments",
-      "DOMAIN_NAME=domain1",
-      "MEM_MAX_RAM_PERCENTAGE=80.0",
-      "MEM_XSS=512k",
-      "PASSWORD_FILE=/opt/payara/passwordFile",
+      join("=", ["admin_user", var.payara_admin_username]),
+      join("=", ["admin_password", var.payara_admin_password]),
+      join("=", ["postgres_jdbc_version", var.postgres_jdbc_version]),
+      join("=", ["mssql_jdbc_version", var.mssql_jdbc_version]),
+      join("=", ["activemq_version", var.activemq_version]),
+      join("=", ["payara_version", var.payara_version]),
     ]
 
     scripts = [
@@ -107,12 +74,10 @@ build {
     ]
   }
 
-  //////////////////////
-  // Create Entrypoint
-  //////////////////////
+  // Entrypoint
 
   provisioner "file" {
-    content = <<-HEREDOC
+    content     = <<-HEREDOC
       #!/bin/bash
       set -x
       for f in $SCRIPT_DIR/init_* $SCRIPT_DIR/init.d/*; do
@@ -132,14 +97,7 @@ build {
     inline = ["chmod +rx /usr/local/bin/docker-entrypoint.sh"]
   }
 
-  //////////////////////
   // Post-Processing
-  //////////////////////
-
-  provisioner "breakpoint" {
-    disable = true
-    note    = "Post-processing"
-  }
 
   post-processors {
 

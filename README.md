@@ -9,7 +9,12 @@
 | Windows 11         | -     | -       | -       | -      |
 | Windows 2022       | -     | -       | YES     | -      |
 | ActiveMQ (Classic) | -     | -       | -       | YES    |
-| Payara Server      | -     | -       | -       | -      |
+| Payara Server      | -     | -       | -       | YES    |
+
+# Artifacts
+
+  * [ghcr.io/kred-no/packer-image-builds/activemq-classic](https://github.com/kred-no/packer-image-builds/pkgs/container/packer-image-builds%2Factivemq-classic)
+  * [ghcr.io/kred-no/packer-image-builds/payara-server](https://github.com/kred-no/packer-image-builds/pkgs/container/packer-image-builds%2Fpayara-server)
 
 ## Build Workflow
 

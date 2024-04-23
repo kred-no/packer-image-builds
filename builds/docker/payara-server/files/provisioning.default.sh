@@ -6,13 +6,29 @@ log(){
 }
 
 ########################
+## Script Environment
+########################
+
+ADMIN_USER=${admin_user:-"admin"}
+ADMIN_PASSWORD=${admin_password:-"admin"}
+HOME_DIR=${gome_dir:-"/opt/payara"}
+PAYARA_DIR=${payara_dir:-"${HOME_DIR}/appserver"}
+SCRIPT_DIR=${script_dir:-"${HOME_DIR}/scripts"}
+CONFIG_DIR=${config_dir:-"${HOME_DIR}/config"}
+DEPLOY_DIR=${deploy_dir:-"${HOME_DIR}/deployments"}
+DOMAIN_NAME=${domain_name:-"domain1"}
+MEM_MAX_RAM_PERCENTAGE=${max_ram_percentage:-"80.0"}
+MEM_XSS=${mem_xss:-"512k"}
+PASSWORD_FILE=${password_file:-"/opt/payara/passwordFile"}
+
+########################
 ## Configure OS
 ########################
 
 log "Installing OS packages"
 
 apt-get update
-apt-get -qqy install unzip curl tar
+apt-get -qqy install apt-utils unzip curl tar
 
 ########################
 ## Create Payara User & Folders
@@ -24,6 +40,20 @@ mkdir -p ${HOME_DIR}
 addgroup payara
 adduser --system --no-create-home --shell /bin/bash --home ${HOME_DIR} --gecos "Payara User" --ingroup payara payara
 echo payara:payara | chpasswd
+
+########################
+## Pre-Tasks
+########################
+
+log "Downloading external files to /tmp"
+
+pushd /tmp
+chmod +x *.sh
+./pre-jdbc-postgres.sh
+./pre-jdbc-mssql-jre11.sh
+./pre-activemq-rar.sh
+./pre-payara-server.sh
+popd
 
 ########################
 ## Install Payara
