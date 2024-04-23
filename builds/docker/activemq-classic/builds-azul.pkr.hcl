@@ -36,7 +36,7 @@ build {
   /* FAILS when using github workflow
   provisioner "shell-local" {
     environment_vars = [
-      format("temp_folder=%s", var.temp_folder),
+      format("resource_folder=%s", var.resource_folder),
       format("activemq_version=%s", var.activemq_version),
       format("jdbc_version=%s", var.postgres_jdbc_version),
       format("hawtio_version=%s", var.hawtio_version),
@@ -64,9 +64,9 @@ build {
     generated = true
 
     sources = [
-      "${path.root}/apache-activemq-bin.tar.gz",
-      "${path.root}/postgresql.jar",
-      "${path.root}/hawtio-default.war",
+      format("%s/apache-activemq-bin.tar.gz", var.resource_folder),
+      format("%s/postgresql.jar", var.resource_folder),
+      format("%s/hawtio-default.war", var.resource_folder),
     ]
 
     destination = "/tmp/"

@@ -8,12 +8,16 @@ log(){
 # Validation
 if [ -z "hawtio_version" ]; then echo "Please set the 'hawtio_version' variable";exit 1; fi
 
+# Environment
+
+hawtio_url="https://repo1.maven.org/maven2/io/hawt/hawtio-default/${hawtio_version}/hawtio-default-${hawtio_version}.war"
+hawtio_filename="hawtio-default"
+
 # //////////////////////
 # // Download HawtIO
 # //////////////////////
 
-hawtio_url="https://repo1.maven.org/maven2/io/hawt/hawtio-default/${hawtio_version}/hawtio-default-${hawtio_version}.war"
-hawtio_filename="hawtio-default"
+pushd ${resource_folder:-"./cache"}
 
 log "[HawtIO] Processing v${hawtio_version}"
 
@@ -37,6 +41,8 @@ if [[ ! -f "${hawtio_filename}.war" ]]; then
 fi
 
 log "[HawtIO] Checksum OK; Finished"
+
+popd
 
 # //////////////////////
 # // Done

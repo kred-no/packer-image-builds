@@ -8,12 +8,16 @@ log(){
 # Validation
 if [ -z "jdbc_version" ]; then echo "Please set the 'jdbc_version' variable";exit 1;fi
 
-# //////////////////////
-# // Download Postgres JDBC
-# //////////////////////
+# Environment
 
 jdbc_url="https://repo1.maven.org/maven2/org/postgresql/postgresql/${jdbc_version}/postgresql-${jdbc_version}.jar"
 jdbc_filename="postgresql"
+
+# //////////////////////
+# // Download JDBC
+# //////////////////////
+
+pushd ${resource_folder:-"./cache"}
 
 log "[Postgres-JDBC] Processing v${jdbc_version}"
 
@@ -37,6 +41,8 @@ if [[ ! -f "${jdbc_filename}.jar" ]]; then
 fi
 
 log "[Postgres-JDBC] Checksum OK; Finished"
+
+popd
 
 # //////////////////////
 # // Done

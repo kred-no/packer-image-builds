@@ -1,9 +1,9 @@
 variable "resource_folder" {
   description = "N/A"
   type        = string
-  default     = env("RUNNER_TEMP")
+  #default     = env("RUNNER_TEMP")
   #default     = env("GITHUB_WORKSPACE")
-  #default     = "./../../.."
+  default     = "./cache"
 }
 
 variable "activemq_version" {

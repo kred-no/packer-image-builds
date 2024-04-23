@@ -6,9 +6,9 @@ on:
   #push:
   workflow_dispatch:
 
+# Shared ENV for all tasks    
 env:
-  resource_folder: $RUNNER_TEMP
-  activemq_version: '6.1.2'
+  #activemq_version: '6.1.2'
   jdbc_version: '42.7.3'
   hawtio_version: '4.0.0'
 
@@ -16,6 +16,12 @@ jobs:
   packer:
     runs-on: ubuntu-latest
     name: Run Packer
+
+    strategy:
+      matrix:
+        activemq_version:
+        - '6.1.2'
+
     steps:
     -
       name: Checkout
@@ -32,17 +38,13 @@ jobs:
       working-directory: ./builds/docker/activemq-classic # /home/runner/work/packer-image-builds/packer-image-builds/builds/docker/activemq-classic
       id: pre
       run: |
+        mkdir -p ${{ runner.temp }}/cache
         chmod +rx ./files/*.sh
         ./files/pre-provisioning-activemq.sh
         ./files/pre-provisioning-hawtio.sh
         ./files/pre-provisioning-postgres.sh
-    #-
-    #  name: Login to GitHub Container Registry
-    #  uses: docker/login-action@v3
-    #  with:
-    #    registry: ghcr.io
-    #    username: ${{ github.actor }}
-    #    password: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        activemq_version: ${{ matrix.activemq_version }}
     -
       name: Build
       working-directory: ./builds/docker/activemq-classic
@@ -52,6 +54,8 @@ jobs:
         packer validate .
         packer build -color=false -on-error=abort .
       env:
+        PKR_VAR_resource_folder: ${{ runner.temp }}/cache
+        PKR_VAR_activemq_version: ${{ matrix.activemq_version }}
         PKR_VAR_repository: "ghcr.io/${{ github.repository }}/activemq-classic"
         PKR_VAR_registry_server: ghcr.io
         PKR_VAR_registry_username: ${{ github.actor }}

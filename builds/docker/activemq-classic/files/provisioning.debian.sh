@@ -30,11 +30,13 @@ rm -rf ${TEMPDIR}/apache-activemq-bin.tar.gz
 sed -i 's/127.0.0.1/0.0.0.0/g' "${ACTIVEMQ_HOME}/conf/jetty.xml"
 sed -i 's/127.0.0.1/0.0.0.0/g' "${ACTIVEMQ_HOME}/conf/activemq.xml"
 
-# v5.x.x
-#sed -ri 's/^(\s*)ACTIVEMQ_OPTS_MEMORY=(.*)/\1ACTIVEMQ_OPTS_MEMORY="-XX:MaxRAMPercentage=85.0 -XX:InitialRAMPercentage=85.0 -XX:+ExitOnOutOfMemoryError"/g' "${ACTIVEMQ_HOME}/bin/env"
-
 # v6.x.x
 sed -ri 's/^(\s*)ACTIVEMQ_OPTS_MEMORY=(.*)/\1ACTIVEMQ_OPTS_MEMORY="-XX:MaxRAMPercentage=85.0 -XX:InitialRAMPercentage=85.0 -XX:+ExitOnOutOfMemoryError"/g' "${ACTIVEMQ_HOME}/bin/setenv"
+
+# LEGACY: v5.x.x
+if [[ ${activemq_version:0:1} == "5" ]]; then
+  sed -ri 's/^(\s*)ACTIVEMQ_OPTS_MEMORY=(.*)/\1ACTIVEMQ_OPTS_MEMORY="-XX:MaxRAMPercentage=85.0 -XX:InitialRAMPercentage=85.0 -XX:+ExitOnOutOfMemoryError"/g' "${ACTIVEMQ_HOME}/bin/env"
+fi
 
 # //////////////////////
 # Drivers
