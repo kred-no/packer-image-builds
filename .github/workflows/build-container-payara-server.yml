@@ -30,19 +30,8 @@ jobs:
       with:
         version: "latest"
     -
-      name: Pre-Build
+      name: Build
       working-directory: ./builds/docker/payara-server
-      id: pre
+      id: build
       run: |
         packer build -except="push" .
-      env:
-        payara_version: ${{ matrix.payara_version }}
-    -
-      name: Post-Build
-      working-directory: ./builds/docker/payara-server
-      id: post
-      run: |
-        set -x
-        pwd
-        ls -lah
-        ls -lah ${{ runner.temp }}/
