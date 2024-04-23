@@ -48,6 +48,10 @@ build {
   //////////////////////
 
   provisioner "shell-local" {
+    inline = ["chmod +rx ./files/*.sh"]
+  }
+
+  provisioner "shell-local" {
     scripts = [
       "./files/pre-jdbc-postgres.sh",
       "./files/pre-jdbc-mssql-jre11.sh",
