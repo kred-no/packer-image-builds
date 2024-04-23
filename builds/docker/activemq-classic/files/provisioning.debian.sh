@@ -8,7 +8,6 @@ log () {
 # Validation
 if [ ! -f "/tmp/apache-activemq-bin.tar.gz" ];then log "Missing ActiveMQ!";exit 1;fi
 if [ ! -f "/tmp/postgresql.jar" ];then log "Missing Postgres JDBC driver!";exit 1;fi
-if [ ! -f "/tmp/hawtio-default.war" ];then log "Missing HawtIO!";exit 1;fi
 
 TEMPDIR=/tmp
 ACTIVEMQ_HOME=/opt/activemq
@@ -46,13 +45,6 @@ fi
 
 mkdir -p ${ACTIVEMQ_HOME}/lib/optional
 mv ${TEMPDIR}/postgresql.jar ${ACTIVEMQ_HOME}/lib/optional/
-
-# //////////////////////
-# HawtIO
-# //////////////////////
-
-mkdir -p ${ACTIVEMQ_HOME}/webapps/hawtio/
-mv ${TEMPDIR}/hawtio-default.war ${ACTIVEMQ_HOME}/webapps/hawtio/
 
 # //////////////////////
 # // Users & Permissions

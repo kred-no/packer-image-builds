@@ -6,11 +6,9 @@ on:
   #push:
   workflow_dispatch:
 
-# Shared ENV for all tasks    
+# Shared ENV for all steps/tasks
 env:
-  #activemq_version: '6.1.2'
   jdbc_version: '42.7.3'
-  hawtio_version: '4.0.0'
 
 jobs:
   packer:
@@ -21,6 +19,7 @@ jobs:
       matrix:
         activemq_version:
         - '6.1.2'
+        - '5.18.4'
 
     steps:
     -
@@ -40,7 +39,6 @@ jobs:
       run: |
         chmod +rx ./files/*.sh
         ./files/pre-provisioning-activemq.sh
-        ./files/pre-provisioning-hawtio.sh
         ./files/pre-provisioning-postgres.sh
       env:
         activemq_version: ${{ matrix.activemq_version }}

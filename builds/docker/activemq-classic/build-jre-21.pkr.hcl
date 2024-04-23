@@ -66,7 +66,6 @@ build {
     sources = [
       format("%s/apache-activemq-bin.tar.gz", var.resource_folder),
       format("%s/postgresql.jar", var.resource_folder),
-      format("%s/hawtio-default.war", var.resource_folder),
     ]
 
     destination = "/tmp/"
@@ -110,9 +109,9 @@ build {
       repository = var.repository
 
       tags = [
-        "latest",
         var.activemq_version,
-        local.timestamp,
+        format("%-latest", var.activemq_version),
+        format("%s-%s", var.activemq_version, local.timestamp),
       ]
     }
 
