@@ -3,14 +3,13 @@
 | Image              | azure | vsphere | vagrant | docker |
 | :--                | :-:   | :-:     | :-:     | :-:    |
 | Debian 11          | -     | -       | -       | -      |
-| Debian 12          | -     | -       | OK      | -      |
+| Debian 12          | -     | -       | YES     | -      |
 | Ubuntu 20.04       | -     | -       | -       | -      |
-| Ubuntu 24.04       | -     | -       | OK      | -      |
+| Ubuntu 24.04       | -     | -       | YES     | -      |
 | Windows 11         | -     | -       | -       | -      |
-| Windows 2022       | -     | -       | OK      | -      |
-| ActiveMQ (Classic) | -     | -       | -       | -      |
+| Windows 2022       | -     | -       | YES     | -      |
+| ActiveMQ (Classic) | -     | -       | -       | YES    |
 | Payara Server      | -     | -       | -       | -      |
-
 
 ## Build Workflow
 

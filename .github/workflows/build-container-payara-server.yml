@@ -1,0 +1,58 @@
+# https://docs.github.com/en/actions/learn-github-actions/variables
+# https://docs.github.com/en/actions/learn-github-actions/contexts
+name: build-container-payara-server
+
+on:
+  workflow_dispatch:
+
+# Shared ENV for all steps/tasks
+env: {}
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+
+    strategy:
+      matrix:
+        payara_version:
+        - '6.2024.4'
+
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v3
+      id: checkout
+    #-
+    #  name: Setup
+    #  uses: hashicorp/setup-packer@main
+    #  id: setup
+    #  with:
+    #    version: "latest"
+    -
+      name: Pre-Build
+      working-directory: ./builds/docker/payara-server
+      id: pre
+      run: |
+        set -x
+        pwd
+        chmod +rx ./files/*.sh
+        ./files/pre-activemq-rar.sh
+        ./files/pre-jdbc-postgres.sh
+        ./files/pre-jdbc-mssql.sh
+        ./files/pre-payara-server.sh
+        ls -lah
+        mv *.rar ${{ runner.temp }}/
+        mv *.jar ${{ runner.temp }}/
+        mv *.zip ${{ runner.temp }}/
+      env:
+        payara_version: ${{ matrix.payara_version }}
+    -
+      name: Post-Build
+      working-directory: ./builds/docker/payara-server
+      id: post
+      run: |
+        set -x
+        pwd
+        ls -lah
+        ls -lah ${{ runner.temp }}/
