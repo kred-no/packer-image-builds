@@ -1,10 +1,4 @@
-variable "resource_folder" {
-  description = "N/A"
-  type        = string
-  default     = "."
-}
-
-variable "base_image_jre21" {
+variable "base_image_java_21" {
   description = "N/A"
   type        = string
   default     = "azul/zulu-openjdk-debian:21-jre-headless"
@@ -25,7 +19,7 @@ variable "payara_admin_username" {
 variable "payara_admin_password" {
   description = "N/A"
   type        = string
-  default     = "admin123"
+  default     = "Admin123"
 }
 
 variable "activemq_version" {
@@ -48,7 +42,7 @@ variable "mssql_jdbc_version" {
 
 variable "repository" {
   type    = string
-  default = "local/payara-server" #env("GITHUB_REPOSITORY")
+  default = "local/payara-server"
 }
 
 variable "registry_server" {

@@ -1,15 +1,15 @@
 # PACKER-IMAGE-BUILDS
 
-| Image              | azure | vsphere | vagrant | docker |
+| Image Name         | Azure | vSphere | Vagrant | Docker |
 | :--                | :-:   | :-:     | :-:     | :-:    |
 | Debian 11          | -     | -       | -       | -      |
-| Debian 12          | -     | -       | YES     | -      |
+| Debian 12          | -     | -       | yes     | -      |
 | Ubuntu 20.04       | -     | -       | -       | -      |
-| Ubuntu 24.04       | -     | -       | YES     | -      |
+| Ubuntu 24.04       | -     | -       | yes     | -      |
 | Windows 11         | -     | -       | -       | -      |
-| Windows 2022       | -     | -       | YES     | -      |
-| ActiveMQ (Classic) | -     | -       | -       | YES    |
-| Payara Server      | -     | -       | -       | YES    |
+| Windows 2022       | -     | -       | yes     | -      |
+| ActiveMQ (Classic) | -     | -       | -       | yes    |
+| Payara Server      | -     | -       | -       | yes    |
 
 # Artifacts
 

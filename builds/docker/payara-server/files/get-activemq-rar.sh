@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+OUTDIR=${outdir:-"/tmp"}
 VERSION_MAJOR=${activemq_major:-'6'}
 VERSION_MINOR=${activemq_minor:-'1'}
 VERSION_PATCH=${activemq_patch:-'2'}
@@ -18,7 +19,9 @@ log(){
 
 URL="https://repo1.maven.org/maven2/org/apache/activemq/activemq-rar/${VERSION}/activemq-rar-${VERSION}.rar"
 
+pushd ${OUTDIR}
 log "[ActiveMQ] Processing v${VERSION}"
+
 curl --silent --retry 3 -L "${URL}.sha1" -o "activemq-rar.rar.sha1"
 
 if [[ -f "./activemq-rar.rar" ]]; then
@@ -39,6 +42,7 @@ if [[ ! -f "./activemq-rar.rar" ]]; then
 fi
 
 log "[ActiveMQ] Checksum OK; Finished"
+popd
 
 # //////////////////////
 # // Done

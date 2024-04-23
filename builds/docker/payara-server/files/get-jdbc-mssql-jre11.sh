@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+OUTDIR=${outdir:-"/tmp"}
 VERSION_MAJOR=${mssql_jdbc_major:-'12'}
 VERSION_MINOR=${mssql_jdbc_minor:-'6'}
 VERSION_PATCH=${mssql_jdbc_patch:-'1'}
@@ -18,6 +19,7 @@ log(){
 
 URL="https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/${VERSION}.jre11/mssql-jdbc-${VERSION}.jre11.jar"
 
+pushd ${OUTDIR}
 log "[MSSQL-JDBC] Processing v${VERSION}"
 
 curl --silent --retry 3 -L "${URL}.sha1" -o "mssql.jar.sha1"
@@ -40,6 +42,7 @@ if [[ ! -f "./mssql.jar" ]]; then
 fi
 
 log "[MMSQL-JDBC] Checksum OK; Finished"
+popd
 
 # //////////////////////
 # // Done

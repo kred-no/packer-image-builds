@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+OUTDIR=${outdir:-"/tmp"}
 VERSION_MAJOR=${postgres_jdbc_major:-'42'}
 VERSION_MINOR=${postgres_jdbc_minor:-'7'}
 VERSION_PATCH=${postgres_jdbc_patch:-'3'}
@@ -19,6 +20,7 @@ log(){
 
 POSTGRES_JDBC_URL="https://repo1.maven.org/maven2/org/postgresql/postgresql/${VERSION}/postgresql-${VERSION}.jar"
 
+pushd ${OUTDIR}
 log "[Postgres-JDBC] Processing v${VERSION}"
 
 curl --silent --retry 3 -L "${POSTGRES_JDBC_URL}.sha1" -o "postgres.sha1"
@@ -41,6 +43,7 @@ if [[ ! -f "./postgres.jar" ]]; then
 fi
 
 log "[Postgres-JDBC] Checksum OK; Finished"
+popd
 
 # //////////////////////
 # // Done

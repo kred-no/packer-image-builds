@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+OUTDIR=${outdir:-"/tmp"}
 VERSION_MAJOR=${payara_major:-'6'}
 VERSION_MINOR=${payara_minor:-'2024'}
 VERSION_PATCH=${payara_patch:-'4'}
@@ -15,7 +16,9 @@ log(){
 # Download Payara Server
 PAYARA_URL=https://nexus.payara.fish/repository/payara-community/fish/payara/distributions/payara/${VERSION}/payara-${VERSION}.zip
 
+pushd ${OUTDIR}
 log "[Payara] Processing v${VERSION}"
+
 curl --silent --retry 3  -L "${PAYARA_URL}.sha1" -o "payara.zip.sha1"
 
 if [[ -f "payara.zip" ]]; then
@@ -36,5 +39,6 @@ if [[ ! -f "payara.zip" ]]; then
 fi
 
 log "[Payara] Checksum OK; Finished!"
+popd
 
 exit 0

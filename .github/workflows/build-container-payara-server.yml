@@ -7,9 +7,9 @@ on:
 
 # Shared ENV for all steps/tasks
 env:
-  ACTIVEMQ_RAR_VERSION: "6.1.2"
-  POSTGRES_JDBC_VERSION: "42.7.3"
-  MSSQL_JDBC_VERSION: "12.6.1"
+  activemq_rar_version: "6.1.2"
+  postgres_jdbc_version: "42.7.3"
+  mssql_jdbc_version: "12.6.1"
 
 jobs:
   packer-java-21:
@@ -20,7 +20,7 @@ jobs:
       matrix:
         payara_version:
         - '6.2024.4'
-        image:
+        java_image:
         - azul/zulu-openjdk-debian:21-jre-headless
 
     steps:
@@ -48,12 +48,12 @@ jobs:
       run: |
         packer build .
       env:
-        PKR_VAR_repository: ghcr.io/${{ github.repository }}/payara-server
         PKR_VAR_registry_server: ghcr.io
         PKR_VAR_registry_username: ${{ github.actor }}
         PKR_VAR_registry_password: ${{ secrets.GITHUB_TOKEN }}
-        PKR_VAR_activemq_version: ${{ env.ACTIVEMQ_RAR_VERSION }}
-        PKR_VAR_jdbc_postgres_version: ${{ env.POSTGRES_JDBC_VERSION }}
-        PKR_VAR_jdbc_mssql_version: ${{ env.MSSQL_JDBC_VERSION }}
-        PKR_VAR_base_image_jre21: ${{ matrix.image }}
+        PKR_VAR_repository: ghcr.io/${{ github.repository }}/payara-server
+        PKR_VAR_activemq_version: ${{ env.activemq_rar_version }}
+        PKR_VAR_jdbc_postgres_version: ${{ env.postgres_jdbc_version }}
+        PKR_VAR_jdbc_mssql_version: ${{ env.mssql_jdbc_version }}
+        PKR_VAR_base_image_java_21: ${{ matrix.java_image }}
         PKR_VAR_payara_version: ${{ matrix.payara_version }}

@@ -25,3 +25,13 @@ docker pull ghcr.io/kred-no/packer-image-builds/payara-server:6.2024.4
 # Run container
 docker run --rm -it -p 8080:8080 ghcr.io/kred-no/packer-image-builds/payara-server:6.2024.4
 ```
+
+## References
+
+**NOTIFIERS**
+  * https://blog.payara.fish/notifier-api-updated
+  * https://docs.payara.fish/community/docs/Technical%20Documentation/Payara%20Server%20Documentation/Logging%20and%20Monitoring/Notification%20Service/Overview.html
+  * https://docs.payara.fish/community/docs/Technical%20Documentation/Payara%20Server%20Documentation/Extensions/Notifiers/Overview.html
+  * https://docs.payara.fish/community/docs/Technical%20Documentation/Payara%20Server%20Documentation/Extensions/Notifiers/MS%20Teams.html
+  * https://nexus.payara.fish/#browse/browse:payara-artifacts:fish%2Fpayara%2Fextensions%2Fnotifiers
+  * https://nexus.payara.fish/#browse/browse:payara-artifacts:fish%2Fpayara%2Fextensions%2Fnotifiers

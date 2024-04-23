@@ -2,15 +2,14 @@
 // Sources
 ////////////////////////
 
-source docker "default-jre-21" {
-  image  = var.base_image_jre21
-  commit = true // Committed & re-tagged in post-processing
+source docker "default-java-21" {
+  image  = var.base_image_java_21
+  commit = true // Re-tagged in post-processing
 
   // Update Container
 
   changes = [
     format("ENV %s=%s", "ADMIN_USER", var.payara_admin_username),
-    #format("ENV %s=%s", "ADMIN_PASSWORD", var.payara_admin_password),
     format("ENV %s=%s", "HOME_DIR", "/opt/payara"),
     format("ENV %s=%s", "PAYARA_DIR", "$HOME_DIR/appserver"),
     format("ENV %s=%s", "SCRIPT_DIR", "$HOME_DIR/scripts"),
@@ -25,9 +24,9 @@ source docker "default-jre-21" {
     format("ENV %s=%s", "DEPLOY_PROPS", ""),
     format("ENV %s=%s", "PATH", "$PATH:$PAYARA_DIR/bin"),
     format("ENV %s=%s", "PREBOOT_COMMANDS", "$CONFIG_DIR/pre-boot-commands.asadmin"),
-    format("ENV %s=%s", "PREBOOT_COMMANDS_FINAL", "$CONFIG_DIR/pre-boot-commands-final.asadmin"),
     format("ENV %s=%s", "POSTBOOT_COMMANDS", "$CONFIG_DIR/post-boot-commands.asadmin"),
-    format("ENV %s=%s", "POSTBOOT_COMMANDS_FINAL", "$CONFIG_DIR/post-boot-commands-final.asadmin"),
+    format("ENV %s=%s", "TZ", "Europe/Oslo"),
+    format("ENV %s=%s", "LC_ALL", "nb_NO.ISO-8859-1"),
     join(" ", ["EXPOSE", "8080", "4848"]),
     "VOLUME /opt/payara/data",
     "USER payara",
@@ -43,19 +42,17 @@ source docker "default-jre-21" {
 
 build {
   name    = "jre-21"
-  sources = ["source.docker.default-jre-21"]
+  sources = ["source.docker.default-java-21"]
 
   // Provisioning
 
-  provisioner "file" {
-    sources = [
-      "${path.root}/files/startInForeground.sh",
-      "${path.root}/files/pre-jdbc-postgres.sh",
-      "${path.root}/files/pre-jdbc-mssql-jre11.sh",
-      "${path.root}/files/pre-activemq-rar.sh",
-      "${path.root}/files/pre-payara-server.sh",
-    ]
+  provisioner "breakpoint" {
+    disable = true
+    note    = "provisioning"
+  }
 
+  provisioner "file" {
+    source      = "${path.root}/files/startInForeground.sh"
     destination = "/tmp/"
   }
 
@@ -70,26 +67,21 @@ build {
     ]
 
     scripts = [
+      "${path.root}/files/pre-provisioning.sh",
+      "${path.root}/files/get-jdbc-postgres.sh",
+      "${path.root}/files/get-jdbc-mssql-jre11.sh",
+      "${path.root}/files/get-activemq-rar.sh",
+      #"${path.root}/files/get-notifiers.sh", # Payara 5.x.x ?
+      "${path.root}/files/get-payara-server.sh",
       "${path.root}/files/provisioning.default.sh",
+      "${path.root}/files/post-provisioning.sh",
     ]
   }
 
   // Entrypoint
 
   provisioner "file" {
-    content     = <<-HEREDOC
-      #!/bin/bash
-      set -x
-      for f in $SCRIPT_DIR/init_* $SCRIPT_DIR/init.d/*; do
-        case "$f" in
-          *.sh)  echo "[Entrypoint] running $f"; . "$f" ;;
-          *)     echo "[Entrypoint] ignoring $f" ;;
-        esac
-        echo
-      done
-
-      exec $SCRIPT_DIR/startInForeground.sh $PAYARA_ARGS
-      HEREDOC
+    source      = "${path.root}/files/docker-entrypoint.sh"
     destination = "/usr/local/bin/docker-entrypoint.sh"
   }
 
@@ -98,6 +90,11 @@ build {
   }
 
   // Post-Processing
+
+  provisioner "breakpoint" {
+    disable = true
+    note    = "post-processing"
+  }
 
   post-processors {
 
