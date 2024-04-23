@@ -50,7 +50,7 @@ build {
   provisioner "shell-local" {
     scripts = [
       "./files/pre-jdbc-postgres.sh",
-      "./files/pre-jdbc-mssql.sh",
+      "./files/pre-jdbc-mssql-jre11.sh",
       "./files/pre-activemq-rar.sh",
       "./files/pre-payara-server.sh",
     ]
