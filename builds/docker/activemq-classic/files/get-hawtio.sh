@@ -5,17 +5,22 @@ log(){
   printf "[%s] %s\n" "$(date -u)" "$1"
 }
 
-# Validation
+########################
+## Validation
+########################
+
 if [ -z "hawtio_version" ]; then echo "Please set the 'hawtio_version' variable";exit 1; fi
 
-# Environment
+########################
+## Environment
+########################
 
 hawtio_url="https://repo1.maven.org/maven2/io/hawt/hawtio-default/${hawtio_version}/hawtio-default-${hawtio_version}.war"
 hawtio_filename="hawtio-default"
 
-# //////////////////////
-# // Download HawtIO
-# //////////////////////
+########################
+## Download HawtIO
+########################
 
 log "[HawtIO] Processing v${hawtio_version}"
 
@@ -40,6 +45,8 @@ fi
 
 log "[HawtIO] Checksum OK; Finished"
 
-# //////////////////////
-# // Done
-# //////////////////////
+########################
+## Done
+########################
+
+exit 0

@@ -2,17 +2,17 @@
 // Sources
 ////////////////////////
 
-source docker "azul-jre-21" {
+source docker "azul-java-21" {
   image  = "azul/zulu-openjdk-debian:21-jre-headless"
   commit = true // Committed & re-tagged in post-processing
 
   changes = [
-    "ENV ACTIVEMQ_HOME /opt/activemq",
-    "ENV ACTIVEMQ_CONF /opt/activemq/conf",
-    "ENV ACTIVEMQ_DATA /opt/activemq/data",
-    "ENV ACTIVEMQ_TMP  /tmp",
-    "ENV ACTIVEMQ_USER activemq",
-    "EXPOSE 5672 8161",
+    format("ENV %s=%s", "ACTIVEMQ_HOME", "/opt/activemq"),
+    format("ENV %s=%s", "ACTIVEMQ_CONF", "/opt/activemq/conf"),
+    format("ENV %s=%s", "ACTIVEMQ_DATA", "/opt/activemq/data"),
+    format("ENV %s=%s", "ACTIVEMQ_TMP", "/tmp"),
+    format("ENV %s=%s", "ACTIVEMQ_USER", "activemq"),
+    "EXPOSE 5672 8161 61616",
     "VOLUME /opt/activemq/data",
     "USER activemq",
     "WORKDIR /opt/activemq",
@@ -27,29 +27,7 @@ source docker "azul-jre-21" {
 
 build {
   name    = "azul-jre-21"
-  sources = ["source.docker.azul-jre-21"]
-
-  //////////////////////
-  // Pre-Provision (Local)
-  //////////////////////
-
-  /* FAILS when using github workflow
-  provisioner "shell-local" {
-    environment_vars = [
-      format("resource_folder=%s", var.resource_folder),
-      format("activemq_version=%s", var.activemq_version),
-      format("jdbc_version=%s", var.postgres_jdbc_version),
-      format("hawtio_version=%s", var.hawtio_version),
-    ]
-
-    scripts = [
-      "${path.root}/files/pre-provisioning-activemq.sh",
-      "${path.root}/files/pre-provisioning-postgres.sh",
-      "${path.root}/files/pre-provisioning-hawtio.sh",
-    ]
-    
-    execute_command = ["/bin/bash", "-c", "{{ .Vars }}", "{{ .Script }}"]
-  }*/
+  sources = ["source.docker.azul-java-21"]
 
   //////////////////////
   // Provision
@@ -60,29 +38,27 @@ build {
     note    = "Provisioning"
   }
 
-  provisioner "file" {
-    generated = true
-
-    sources = [
-      format("%s/apache-activemq-bin.tar.gz", var.resource_folder),
-      format("%s/postgresql.jar", var.resource_folder),
-    ]
-
-    destination = "/tmp/"
-  }
-
   provisioner "shell" {
+    environment_vars = [
+      join("=", ["postgres_jdbc_version", var.postgres_jdbc_version]),
+      join("=", ["activemq_version", var.activemq_version]),
+    ]
+
     scripts = [
-      "${path.root}/files/provisioning.debian.sh",
+      "${path.root}/files/init.sh",
+      "${path.root}/files/get-postgres-jdbc.sh",
+      "${path.root}/files/get-activemq.sh",
+      "${path.root}/files/provisioning.sh",
+      "${path.root}/files/finalize.sh",
     ]
   }
 
   //////////////////////
-  // Add Entrypoint
+  // Entrypoint
   //////////////////////
 
   provisioner "file" {
-    content = <<-HEREDOC
+    content     = <<-HEREDOC
       #!/usr/bin/env bash
       bin/activemq console
       HEREDOC

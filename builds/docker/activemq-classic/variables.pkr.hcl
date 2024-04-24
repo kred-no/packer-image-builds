@@ -1,11 +1,3 @@
-variable "resource_folder" {
-  description = "N/A"
-  type        = string
-  #default     = env("RUNNER_TEMP")
-  #default     = env("GITHUB_WORKSPACE")
-  default     = "."
-}
-
 variable "activemq_version" {
   description = "N/A"
   type        = string
@@ -31,15 +23,15 @@ variable "repository" {
 
 variable "registry_server" {
   type    = string
-  default = "" #"ghcr.io"
+  default = ""
 }
 
 variable "registry_password" {
   type    = string
-  default = "" #env("GITHUB_TOKEN")
+  default = ""
 }
 
 variable "registry_username" {
   type    = string
-  default = "" #env("GITHUB_ACTOR")
+  default = ""
 }
