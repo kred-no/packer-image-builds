@@ -8,7 +8,7 @@ on:
 
 # Shared ENV for all steps/tasks
 env:
-  activemq_rar_version: "6.1.2"
+  activemq_rar_version: "6.1.1"
   postgres_jdbc_version: "42.7.3"
   mssql_jdbc_version: "12.6.1"
 
