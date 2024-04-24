@@ -1,5 +1,6 @@
 # https://docs.github.com/en/actions/learn-github-actions/variables
 # https://docs.github.com/en/actions/learn-github-actions/contexts
+---
 name: build-container-payara-server
 
 on:

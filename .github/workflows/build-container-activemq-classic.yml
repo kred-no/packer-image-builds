@@ -1,14 +1,14 @@
 # https://docs.github.com/en/actions/learn-github-actions/variables
 # https://docs.github.com/en/actions/learn-github-actions/contexts
+---
 name: build-container-activemq-classic
 
 on:
-  #push:
   workflow_dispatch:
 
 # Shared ENV for all steps/tasks
 env:
-  jdbc_version: '42.7.3'
+  postgres_jdbc_version: '42.7.3'
 
 jobs:
   packer:
@@ -33,26 +33,22 @@ jobs:
       with:
         version: "latest"
     -
-      name: Pre-Build # shell-local provisioning fails
-      working-directory: ./builds/docker/activemq-classic # /home/runner/work/packer-image-builds/packer-image-builds/builds/docker/activemq-classic
-      id: pre
-      run: |
-        chmod +rx ./files/*.sh
-        ./files/pre-provisioning-activemq.sh
-        ./files/pre-provisioning-postgres.sh
-      env:
-        activemq_version: ${{ matrix.activemq_version }}
-    -
-      name: Build
-      working-directory: ./builds/docker/activemq-classic
-      id: build
+      name: Packer Init
+      working-directory: ./builds/docker/payara-server
+      id: init
       run: |
         packer init -upgrade .
         packer validate .
-        packer build -color=false -on-error=abort .
+    -
+      name: Packer Build
+      working-directory: ./builds/docker/activemq-classic
+      id: build
+      run: |
+        packer build .
       env:
-        PKR_VAR_activemq_version: ${{ matrix.activemq_version }}
-        PKR_VAR_repository: "ghcr.io/${{ github.repository }}/activemq-classic"
         PKR_VAR_registry_server: ghcr.io
         PKR_VAR_registry_username: ${{ github.actor }}
         PKR_VAR_registry_password: ${{ secrets.GITHUB_TOKEN }}
+        PKR_VAR_repository: "ghcr.io/${{ github.repository }}/activemq-classic"
+        PKR_VAR_jdbc_postgres_version: ${{ env.postgres_jdbc_version }}
+        PKR_VAR_activemq_version: ${{ matrix.activemq_version }}
