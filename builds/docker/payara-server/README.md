@@ -2,12 +2,13 @@
 
 ## Image Content
 
-  * payara server
+  * Payara Server (Community Edition)
   * Java JRE: 21
   * OS: Debian-11
+  * Maven: included
   * MSSQL JDBC driver: included
   * Postgres JDBC driver: included
-  * ActiveMQ Client: included ${PAYARA_DIR}/activemq-rar.rar
+  * ActiveMQ Client: included ${PAYARA_DIR}/glassfish/modules/activemq-rar.rar
 
 ## Official Payara References
 

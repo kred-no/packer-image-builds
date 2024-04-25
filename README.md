@@ -8,7 +8,7 @@
 | Debian 12          | -     | -       | yes     | -      |
 | Ubuntu 20.04       | -     | -       | -       | -      |
 | Ubuntu 24.04       | -     | -       | yes     | -      |
-| Windows 11         | -     | -       | -       | -      |
+| Windows 11         | -     | -       | yes     | -      |
 | Windows 2022       | -     | -       | yes     | -      |
 | ActiveMQ (Classic) | -     | -       | -       | yes    |
 | Payara Server      | -     | -       | -       | yes    |

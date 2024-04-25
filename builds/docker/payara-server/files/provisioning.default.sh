@@ -10,8 +10,8 @@ log(){
 ########################
 
 ADMIN_USER=${admin_user:-"admin"}
-ADMIN_PASSWORD=${admin_password:-"admin"}
-HOME_DIR=${gome_dir:-"/opt/payara"}
+ADMIN_PASSWORD=${admin_password:-"Admin123"}
+HOME_DIR=${home_dir:-"/opt/payara"}
 PAYARA_DIR=${payara_dir:-"${HOME_DIR}/appserver"}
 SCRIPT_DIR=${script_dir:-"${HOME_DIR}/scripts"}
 CONFIG_DIR=${config_dir:-"${HOME_DIR}/config"}
@@ -60,7 +60,12 @@ unzip -qq /tmp/payara.zip -d /tmp
 
 mv /tmp/payara*/* ${PAYARA_DIR}/
 mv /tmp/startInForeground.sh ${SCRIPT_DIR}/
-mv /tmp/activemq-rar.rar ${PAYARA_DIR}/
+
+########################
+## Add Modules and Plugins
+########################
+
+mv /tmp/activemq-rar.rar ${PAYARA_DIR}/glassfish/modules
 
 #mv /tmp/teams-notifier-console-plugin.jar ${PAYARA_DIR}/glassfish/modules/
 #mv /tmp/teams-notifier-core.jar ${PAYARA_DIR}/glassfish/modules/

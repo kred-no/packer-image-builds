@@ -69,7 +69,7 @@ build {
     scripts = [
       "${path.root}/files/pre-provisioning.sh",
       "${path.root}/files/get-jdbc-postgres.sh",
-      "${path.root}/files/get-jdbc-mssql-jre11.sh",
+      "${path.root}/files/get-jdbc-mssql.jre11.sh",
       "${path.root}/files/get-activemq-rar.sh",
       #"${path.root}/files/get-notifiers.sh", # Payara 5.x.x ?
       "${path.root}/files/get-payara-server.sh",
