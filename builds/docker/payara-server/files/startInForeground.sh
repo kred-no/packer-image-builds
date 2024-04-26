@@ -66,6 +66,6 @@ printf "=================================\n"
 printf "    System : %s\n" "$(cat /etc/issue.net)"
 printf "  Hostname : %s\n" "$(hostname)"
 printf "   Address : %s\n" "$(hostname -I)"
-printf "\n\n"
+printf "=================================\n\n"
 
 exec $COMMAND < /tmp/masterpwdfile
