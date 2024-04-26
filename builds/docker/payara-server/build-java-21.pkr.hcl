@@ -9,6 +9,10 @@ source docker "default-java-21" {
   // Update Container
 
   changes = [
+    format("ENV %s=%s", "VER_PAYARA", var.payara_version),
+    format("ENV %s=%s", "VER_ACTIVEMQ_RAR", var.activemq_version),
+    format("ENV %s=%s", "VER_POSTGRES_JDBC", var.postgres_jdbc_version),
+    format("ENV %s=%s", "VER_MSSQL_JDBC", var.mssql_jdbc_version),
     format("ENV %s=%s", "ADMIN_USER", var.payara_admin_username),
     format("ENV %s=%s", "HOME_DIR", "/opt/payara"),
     format("ENV %s=%s", "PAYARA_DIR", "$HOME_DIR/appserver"),
@@ -28,7 +32,7 @@ source docker "default-java-21" {
     format("ENV %s=%s", "TZ", "Europe/Oslo"),
     format("ENV %s=%s", "LC_ALL", "nb_NO.ISO-8859-1"),
     join(" ", ["EXPOSE", "8080", "4848"]),
-    "VOLUME /opt/payara/data",
+    #"VOLUME /opt/payara/data",
     "USER payara",
     "WORKDIR /opt/payara",
     "ENTRYPOINT [\"/usr/local/bin/docker-entrypoint.sh\"]",
@@ -103,7 +107,6 @@ build {
 
       tags = [
         var.payara_version,
-        format("%s-latest", var.payara_version),
         format("%s-%s", var.payara_version, local.timestamp),
       ]
     }

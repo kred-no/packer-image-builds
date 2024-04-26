@@ -25,7 +25,7 @@ variable "payara_admin_password" {
 variable "activemq_version" {
   description = "N/A"
   type        = string
-  default     = "6.1.2"
+  default     = "6.1.1"
 }
 
 variable "postgres_jdbc_version" {

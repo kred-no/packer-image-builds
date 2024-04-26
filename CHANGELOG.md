@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 26. April (2024)
+  * Payara Server: Added Maven to  container; Added 'VER_xx' env-variables for tracking extension-versions; Added autodeploy ++ to startup-script.
+
 ## 24. April (2024)
   * Downgrade ActiveMQ version to [v6.1.1](https://activemq.apache.org/components/classic/download/) (stable)
 
