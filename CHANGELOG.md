@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 28. April (2024)
+  * OpenBao: Added container-build & pipeline
+
 ## 26. April (2024)
   * Payara Server: Added Maven to  container; Added 'VER_xx' env-variables for tracking extension-versions; Added autodeploy ++ to startup-script.
 

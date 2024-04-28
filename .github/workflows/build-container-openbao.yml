@@ -1,0 +1,54 @@
+# https://docs.github.com/en/actions/learn-github-actions/variables
+# https://docs.github.com/en/actions/learn-github-actions/contexts
+---
+name: build-container-openbao
+
+on:
+  workflow_dispatch:
+
+# Shared ENV for all steps/tasks
+env: {}
+
+jobs:
+  packer-java-21:
+    runs-on: ubuntu-latest
+    name: Run Packer
+
+    strategy:
+      matrix:
+        openbao_version:
+        - "2.0.0"
+        base_image:
+        - debian:stable
+
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v3
+      id: checkout
+    -
+      name: Setup
+      uses: hashicorp/setup-packer@v3
+      id: setup
+      with:
+        version: "latest"
+    -
+      name: Packer Init
+      working-directory: ./builds/docker/openbao
+      id: init
+      run: |
+        packer init -upgrade .
+        packer validate .
+    -
+      name: Packer Build
+      working-directory: ./builds/docker/openbao
+      id: build
+      run: |
+        packer build .
+      env:
+        PKR_VAR_registry_server: ghcr.io
+        PKR_VAR_registry_username: ${{ github.actor }}
+        PKR_VAR_registry_password: ${{ secrets.GITHUB_TOKEN }}
+        PKR_VAR_repository: ghcr.io/${{ github.repository }}/openbao
+        PKR_VAR_base_image: ${{ matrix.base_image }}
+        PKR_VAR_openbao_version: ${{ matrix.openbao_version }}
