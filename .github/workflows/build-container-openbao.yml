@@ -46,9 +46,9 @@ jobs:
       run: |
         packer build .
       env:
-        PKR_VAR_registry_server: ghcr.io
-        PKR_VAR_registry_username: ${{ github.actor }}
-        PKR_VAR_registry_password: ${{ secrets.GITHUB_TOKEN }}
-        PKR_VAR_repository: ghcr.io/${{ github.repository }}/openbao
+        PKR_VAR_target_registry_server: ghcr.io
+        PKR_VAR_target_registry_username: ${{ github.actor }}
+        PKR_VAR_target_registry_password: ${{ secrets.GITHUB_TOKEN }}
+        PKR_VAR_target_repository: ghcr.io/${{ github.repository }}/openbao
         PKR_VAR_base_image: ${{ matrix.base_image }}
         PKR_VAR_openbao_version: ${{ matrix.openbao_version }}
