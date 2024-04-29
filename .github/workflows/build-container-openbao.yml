@@ -34,14 +34,14 @@ jobs:
         version: "latest"
     -
       name: Packer Init
-      working-directory: ./builds/docker/openbao
+      working-directory: ./builds/container/openbao
       id: init
       run: |
         packer init -upgrade .
         packer validate .
     -
       name: Packer Build
-      working-directory: ./builds/docker/openbao
+      working-directory: ./builds/container/openbao
       id: build
       run: |
         packer build .

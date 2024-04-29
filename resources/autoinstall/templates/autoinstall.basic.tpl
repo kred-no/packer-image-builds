@@ -4,7 +4,6 @@ autoinstall:
 
   refresh-installer:
     update: yes
-    #channel: edge
 
   # Stopping ssh-server during initial setup (packer)
   early-commands:
@@ -36,7 +35,7 @@ autoinstall:
   - linux-tools-virtual
   - linux-cloud-tools-virtual
 
-  # NOTE: curtin in-target runs as 'root' user. Target filesystem is mounted under /target
+  # NOTE: curtin in-target runs as 'root' user. Provisioned ('target') filesystem is mounted under /target
   late-commands:
   - echo '${username} ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/${username}
   - curtin in-target --target=/target -- systemctl enable ssh

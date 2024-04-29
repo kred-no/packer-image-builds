@@ -1,11 +1,13 @@
+////////////////////////
+// Source
+////////////////////////
+
 source "hyperv-iso" "w2k22" {
   headless    = false
   skip_export = false
-  #output_directory = "${path.root}/packer_cache/hyperv/w2k22"
 
   iso_url      = "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/SERVER_EVAL_x64FRE_en-us.iso"
   iso_checksum = "sha256:3e4fa6d8507b554856fc9ca6079cc402df11a8b79344871669f0251535255325" # Generated
-  #iso_target_path = "${path.root}/packer_cache/iso/"
 
 
   #firmware              = "efi"
@@ -50,3 +52,41 @@ source "hyperv-iso" "w2k22" {
   #shutdown_command = "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\""
   shutdown_command = "cmd.exe /c C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -File E:\\shutdown.ps1"
 }
+
+////////////////////////
+// Build: Basic Server
+////////////////////////
+
+build {
+  name    = "WindowsServer"
+  sources = ["source.hyperv-iso.w2k22"]
+
+  provisioner "breakpoint" {
+    disable = false
+    note    = "Before Processing"
+  }
+
+  # Install SaltStack
+
+  provisioner "powershell" {
+    scripts = [
+      "${path.root}/files/powershell/SaltStack.ps1",
+    ]
+  }
+
+  provisioner "breakpoint" {
+    disable = false
+    note    = "Post Processing"
+  }
+
+  # See https://developer.hashicorp.com/packer/integrations/hashicorp/vagrant/latest/components/post-processor/vagrant#configuration
+  post-processor "vagrant" {
+    keep_input_artifact = false
+    compression_level   = 9
+    architecture        = "amd64"
+    include             = []
+    #vagrantfile_template = "${path.root}/files/templates/vagrant.template"
+    output = "${path.root}/boxes/{{ .BuildName }}-{{ .Provider }}-{{ .Architecture }}-${local.timestamp}.box"
+  }
+}
+

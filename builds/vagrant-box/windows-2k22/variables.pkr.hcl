@@ -1,29 +1,28 @@
-packer {
-  required_version = ">= 1.10"
-
-  required_plugins {
-    hyperv = {
-      source  = "github.com/hashicorp/hyperv"
-      version = ">= 1.1"
-    }
-
-    vagrant = {
-      source  = "github.com/hashicorp/vagrant"
-      version = ">= 1.1"
-    }
-  }
-}
-
-# -- Locals
+////////////////////////
+// Local Variables
+////////////////////////
 
 locals {
-  timestamp = formatdate("YYYYMMDD", timestamp())
+  timestamp             = formatdate("YYYYMMDD", timestamp())
+  shared_resources_path = "./../../../resources"
 }
 
-# -- Variables
+////////////////////////
+// Build Variables
+////////////////////////
+
+variable "headless_build" {
+  description = "N/A"
+  type        = bool
+  default     = false
+}
+
+////////////////////////
+// Authentication
+////////////////////////
 
 variable "packer_credentials" {
-  description = "NOTE: mkpasswd -m sha-512 <PASSWORD>"
+  description = "To create Encrypted password (Linux): mkpasswd -m sha-512 <PASSWORD>"
 
   type = object({
     username           = string
@@ -34,6 +33,6 @@ variable "packer_credentials" {
   default = {
     username           = "vagrant"
     password           = "vagrant"
-    password_encrypted = "N/A"
+    password_encrypted = "$6$RPM5oN1dyueHjiVL$V24knK76O08u0dPgZWiiiBafTjV8lfZAErJBmgnaq32QbnrGRvQW4N6a0M5OsZyb/7Lv1c2gLe9LkwaRDQINn0"
   }
 }

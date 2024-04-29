@@ -34,14 +34,14 @@ jobs:
         version: "latest"
     -
       name: Packer Init
-      working-directory: ./builds/docker/payara-server
+      working-directory: ./builds/container/payara-server
       id: init
       run: |
         packer init -upgrade .
         packer validate .
     -
       name: Packer Build
-      working-directory: ./builds/docker/activemq-classic
+      working-directory: ./builds/container/activemq-classic
       id: build
       run: |
         packer build .

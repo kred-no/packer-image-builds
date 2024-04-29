@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## 28. April (2024)
+  * Cleanup/renaming/unifying files & folders
   * OpenBao: Added container-build & pipeline
 
 ## 26. April (2024)

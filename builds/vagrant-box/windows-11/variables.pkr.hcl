@@ -1,6 +1,6 @@
-########################
-## Variables
-########################
+////////////////////////
+// Variables
+////////////////////////
 
 variable "installation_iso" {
   description = "N/A"
@@ -15,6 +15,15 @@ variable "installation_iso" {
     sha256checksum = "12DB26712076F29E7509B5B6393F6EF3089D6DECE660F508F7384705D54D608B"
   }
 }
+
+variable "headless_build" {
+  type    = bool
+  default = true
+}
+
+////////////////////////
+// Authentication
+////////////////////////
 
 variable "vagrant_username" {
   description = "N/A"
@@ -32,9 +41,4 @@ variable "vagrant_password_encrypted" {
   description = "N/A"
   type        = string
   default     = ""
-}
-
-variable "headless_build" {
-  type    = bool
-  default = true
 }
