@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         activemq_version:
-        - '6.1.1'
+        - '6.1.2'
         - '5.18.4'
 
     steps:
