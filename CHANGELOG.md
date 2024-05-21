@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 21. May (2024)
+  * ActiveMQ provisioning cleanup
+
 ## 28. April (2024)
   * Cleanup/renaming/unifying files & folders
   * OpenBao: Added container-build & pipeline
