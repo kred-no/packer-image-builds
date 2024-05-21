@@ -1,5 +1,5 @@
 ////////////////////////
-// Sources
+// Sources Java 21
 ////////////////////////
 
 source docker "azul-java-21" {
@@ -45,11 +45,7 @@ build {
     ]
 
     scripts = [
-      "${path.root}/files/init.sh",
-      "${path.root}/files/get-postgres-jdbc.sh",
-      "${path.root}/files/get-activemq.sh",
       "${path.root}/files/provisioning.sh",
-      "${path.root}/files/finalize.sh",
     ]
   }
 
@@ -60,6 +56,9 @@ build {
   provisioner "file" {
     content     = <<-HEREDOC
       #!/usr/bin/env bash
+      printf "\n  OS: %s\n  IP: %s\n\n" "$(cat /etc/issue.net)" "$(hostname -I)"
+      java -version
+      echo
       bin/activemq console
       HEREDOC
     destination = "/usr/local/bin/docker-entrypoint.sh"

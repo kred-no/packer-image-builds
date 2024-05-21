@@ -17,6 +17,12 @@ docker pull ghcr.io/kred-no/packer-image-builds/activemq-classic:6.1.1
 docker run --rm -it -p 8161:8161 ghcr.io/kred-no/packer-image-builds/activemq-classic:6.1.1
 ```
 
+## Build Process
+
+  1. PreStage
+  1. BuildStage
+  1. PostStage
+
 ## External Resources
 
   * https://activemq.apache.org/components/classic/documentation/integrating-apache-activemq-classic-with-glassfish
