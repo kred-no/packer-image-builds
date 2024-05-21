@@ -2,19 +2,41 @@
 
 ## Base Image
 
-  * container: azul/zulu-openjdk-debian:21-jre-headless
-  * java-version: 21
-  * os-version: debian-11
-  * postgres jdbc driver included
+  * Container: azul/zulu-openjdk-debian (headless)
+  * Extra Drivers: postgres (jdbc)
 
-## Usage
+## Example Use
 
 ```bash
-# Pull image
+# Pull Docker image
 docker pull ghcr.io/kred-no/packer-image-builds/activemq-classic:6.1.1
 
-# Run container
+# Run standalone container
 docker run --rm -it -p 8161:8161 ghcr.io/kred-no/packer-image-builds/activemq-classic:6.1.1
+
+# Run compose container
+docker compose run -f ./compose.yml up
+```
+
+```yaml
+# ./compose.yml
+services:
+  activemq:
+    image: ghcr.io/kred-no/packer-image-builds/activemq-classic:6.1.2
+    hostname: activemq
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 384M
+    volumes:
+    - type: bind
+      source: ./users.properties
+      target: /opt/activemq/conf/users.properties
+    - type: bind
+      source: ./groups.properties
+      target: /opt/activemq/conf/groups.properties
+    ports: ["5672:5672", "8161:8161"]
 ```
 
 ## Build Process
